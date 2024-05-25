@@ -1,0 +1,22 @@
+{
+  "name": "gardenapi",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Taylor-99/Garden-Health.git"
+  },
+  "author": "Taylor Young",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Taylor-99/Garden-Health/issues"
+  },
+  "homepage": "https://github.com/Taylor-99/Garden-Health#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
