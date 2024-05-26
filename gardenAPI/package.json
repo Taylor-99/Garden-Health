@@ -17,6 +17,18 @@
   },
   "homepage": "https://github.com/Taylor-99/Garden-Health#readme",
   "dependencies": {
-    "express": "^4.19.2"
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.2",
+    "connect-livereload": "^0.6.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "livereload": "^0.9.3",
+    "method-override": "^3.0.0",
+    "mongoose": "^8.4.0",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.1",
+    "path": "^0.12.7"
   }
 }
