@@ -1,85 +1,111 @@
-require('dotenv').config()
-const router = require('express').Router()
-const db  = require('../models')
+require('dotenv').config();
+const router = require('express').Router();
+const db  = require('../models');
 const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 // signup route
-
-router.post('/signup', async (req, res) => {
+router.post('/signup', async (req, res, next) => {
     try {
-        console.log({ username: req.body.username})
-        const findExistingUser = await db.User.findOne({ username: req.body.username});
-        if (findExistingUser) {
+
+        let newUser = req.body;
+
+        const existingUser = await db.User.findOne({ username: newUser.username});
+        if (existingUser) {
             return res.json({ message: "Username already exists" });
+        }else{
+            // hash the password
+            newUser.password  = bcrypt.hashSync(newUser.password, bcrypt.genSaltSync(10));
+        
+            const createUser = new db.User(newUser);
+            await createUser.save();
+
+            // make a token
+            const token = createToken(createUser._id)
+            res.json({token, createUser})
+
+            res.cookie("token", token, {
+                // withCredentials: true,
+                httpOnly: false,
+            });
+
+            res.status(201).json({ message: "User signed up successfully", success: true, createUser });
+
+            next();
         }
 
-        // hash the password
-        req.body.password  = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
-        console.log(req.body.password)
-        
-        const newUser = new db.User(req.body)
-        await newUser.save()
-
-        // make a token
-        const token = createToken(newUser._id)
-        res.json({token, newUser})
-
-        res.cookie("token", token, {
-            withCredentials: true,
-            httpOnly: false,
-        });
-
-        res.status(201).json({ message: "User signed in successfully", success: true, user });
-
-        next();
-
     } catch (error) {
-        res.status(400).json({ msg: error.message })
+        console.error(error);
     }
-})
-
-// create profile
-
-
+});
 
 // login route
-router.post('/login', async (req, res) => {
+router.post('/login', async (req, res, next) => {
     try {
-        const { username, password } = req.body;
+        const userLogin = req.body;
 
-        if(!username || !password ){
+        if(!userLogin.username || !userLogin.password ){
             return res.json({message:'All fields are required'})
+        }else {
+            const user = await db.User.findOne({username: userLogin.username});
+
+            if(!user) {
+                console.log(`Could not find this user in the database: User with username ${userLogin.username}`);
+            }else {
+                const auth = await bcrypt.compare(userLogin.password, user.password);
+
+                if (!auth) {
+                    console.log(`The password credentials shared did not match the credentials for the user with username ${user.username}`);
+                }else {
+                    // make a token
+                    const token = createToken(user._id)
+                    res.json({token, user})
+
+                    res.cookie("token", token, {
+                        withCredentials: true,
+                        httpOnly: false,
+                    });
+
+                    res.status(201).json({ message: "User signed in successfully", success: true, user });
+
+                    next();
+                }
+            }
+
         }
 
-        const user = await db.User.findOne({ username });
-        if(!user) throw new Error(`Could not find this user in the database: User with username ${username}`);
-
-        const auth = await bcrypt.compare(password, user.password);
-        console.log(user.password)
-        console.log(password)
-        if (!auth) throw new Error(`The password credentials shared did not match the credentials for the user with username ${username}`);
-
-        const token = createToken(user._id);
-        res.json({ token, user });
-
-        res.cookie("token", token, {
-            withCredentials: true,
-            httpOnly: false,
-          });
-
-        res.status(201).json({ message: "User logged in successfully", success: true });
-
-        next();
-
     } catch (error) {
-        res.status(400).json({ msg: error.message });
+        console.error(error);
     }
-})
+});
+
+//Verification
+router.post('/', async (req, res) => {
+    const token = req.cookies.token
+    console.log(token)
+
+    if (!token) {
+      return res.json({ status: false })
+    }
+
+    jwt.verify(token, process.env.SECRET, async (err, data) => {
+      if (err) {
+       return res.json({ status: false })
+      } else {
+        const user = await db.User.findById(data.userID)
+        if (user) return res.json({ status: true, user: user.username })
+        else return res.json({ status: false })
+      }
+    })
+  })
 
 // createToken
 function createToken(userID){
-    return jwt.sign({ userID }, process.env.SECRET, { expiresIn: 3 * 24 * 60 * 60,});
+    return jwt.sign(
+        { userID }, 
+        process.env.SECRET, 
+        { expiresIn: 3 * 24 * 60 * 60,}
+    );
  }
 
 module.exports = router

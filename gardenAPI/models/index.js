@@ -13,4 +13,5 @@ db.on('connected', function() {
 // Export models to `server.js`
 module.exports = {
     User: require('./user'),
+    UserProfile: require('./user'),
   };

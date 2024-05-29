@@ -14,14 +14,25 @@ const profileSchema = new mongoose.Schema({
         type: String
     },
     image: {
-        type: String, 
-        default: "https://sirinc2.org/branch129/wp-content/uploads/2019/04/no-photo-icon-22.png"
+        type: String,
+    },
+    city: {
+        type: String,
+    },
+    state: {
+        type: String,
+    },
+    gardeningExperience: {
+        type: String,
+    },
+    activityExperience: {
+        type: String,
     },
     bio: {
-        type: String
+        type: String,
     },
-    interest: {
-        type: Array
+    level: {
+        type: String,
     },
     user:{
         type: mongoose.Types.ObjectId, 

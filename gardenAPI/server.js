@@ -11,9 +11,10 @@ const cookieParser = require("cookie-parser");
 // Require the db connection and models
 const db = require('./models');
 
-userCtrl = require('./contollers/userController')
+userCtrl = require('./contollers/userController');
+profileCtrl = require('./contollers/profileController');
 
-const PORT = process.env.PORT||3000
+const PORT = process.env.PORT||3000;
 
 const app = express();
 
@@ -27,8 +28,15 @@ liveReloadServer.server.once("connection", () => {
 });
 
 // Indicates where our static files are located
-app.use(cors())
-app.use(express.static('public'))
+app.use(
+    cors({
+      origin: ["http://localhost:5173"],
+      methods: ["GET", "POST", "PUT", "DELETE"],
+      credentials: true,
+      allowedHeaders: ['Content-Type', 'Authorization']
+    })
+  );
+app.use(express.static('public'));
 // Use the connect-livereload package to connect nodemon and livereload
 app.use(connectLiveReload());
 // Body parser: used for POST/PUT/PATCH routes: 
@@ -37,11 +45,12 @@ app.use(connectLiveReload());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.use(morgan('tiny')) // morgan is just a logger
+app.use(morgan('tiny')); // morgan is just a logger
 
 app.use(cookieParser());
 
-app.use('/users', userCtrl)
+app.use('/auth', userCtrl);
+app.use('/profile', profileCtrl);
 
 // App Listen
 app.listen(PORT, ()=> {
