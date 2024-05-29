@@ -25,7 +25,7 @@ router.post('/signup', async (req, res, next) => {
             res.json({token, createUser})
 
             res.cookie("token", token, {
-                // withCredentials: true,
+                withCredentials: true,
                 httpOnly: false,
             });
 

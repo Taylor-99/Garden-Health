@@ -7,6 +7,8 @@ const jwt = require('jsonwebtoken');
 const verifyToken = (req, res, next) => {
     const token = req.cookies.token;
 
+    console.log(token)
+
     if (!token) {
         return res.status(401).json({ message: 'Access Denied' });
     }
@@ -23,8 +25,10 @@ const verifyToken = (req, res, next) => {
 //create profile
 router.post('/createprofile', verifyToken, async (req, res) => {
 
+    console.log(req.user)
+
     try {
-        const user = await db.User.findById(data.userID);
+        const user = await db.User.findById(req.user.userID);
         console.log(user)
 
         if (!user) {
@@ -41,7 +45,8 @@ router.post('/createprofile', verifyToken, async (req, res) => {
             gardeningExperience: req.body.gExperience,
             activityExperience: req.body.aExperience,
             bio: req.body.bio,
-            user: data.userID
+            level: "starter",
+            user: req.user.userID
         };
 
         let createdUser = await db.UserProfile.create(newUserProfile);

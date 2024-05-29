@@ -30,7 +30,8 @@ export default function Auth(props){
                 Cookies.set('token', data.token);
                 // Redirect or perform an action on successful login
                 props.setUser(data.user)
-                
+                navigate('/')
+
             } else {
                 setError(data.message);
             }
@@ -55,6 +56,9 @@ export default function Auth(props){
                 Cookies.set('token', data.token);
                 // Redirect or perform an action on successful login
                 console.log(data.token)
+                console.log(data)
+                props.setUser(data.createUser)
+                navigate('/createprofile')
             } else {
                 setError(data.message);
             }

@@ -4,6 +4,7 @@ import { Route, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Auth from "./components/Auth"
+import CreateProfile from "./pages/profile/NewProfile"
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         user ?
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/createprofile" element={<CreateProfile user={user}/>} />
         </Routes> :
         <Auth user={user} setUser={setUser} />
       }
