@@ -56,6 +56,46 @@ router.get('/getweather', verifyToken, async (req, res) =>{
         console.error("Error fetching data from API:", error);
         throw error;
       }
+});
+
+async function createChallenge (challengeNum, userId){
+    let newChallenge = {
+        challengeNumber: challengeNum,
+        difficulty: challenges[challengeNum].difficulty,
+        description: challenges[challengeNum].description,
+        count: 0,
+        completed: false,
+        user: userId,
+    }
+
+    let createdChallenge = await db.Challenges.create(newChallenge);
+
+    await createdChallenge.save()
+}
+
+router.get('/challenge', verifyToken, async (req, res) =>{
+
+    const userChallenges = await db.Challenges.find({ user: req.user.userID });
+    console.log(userChallenges.length)
+
+    if(userChallenges.length === 0){
+        createChallenge(0, req.user.userID)
+    }else{
+
+        for(c=0; c < userChallenges.length; c++){
+    
+            if(userChallenges[c].completed === true && c === (userChallenges.length - 1) ){
+                // res.send("needs new Challenge");
+                createChallenge((c+1), req.user.userID)
+            }
+            else if(userChallenges[c].completed === true){
+
+            }else{
+                res.send("need to complete Challenge");
+            }
+        }
+    }
+
 })
 
 module.exports = router
