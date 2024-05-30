@@ -13,6 +13,7 @@ const db = require('./models');
 
 userCtrl = require('./contollers/userController');
 profileCtrl = require('./contollers/profileController');
+homeCtrl = require('./contollers/homeController');
 
 const PORT = process.env.PORT||3000;
 
@@ -51,6 +52,7 @@ app.use(cookieParser());
 
 app.use('/auth', userCtrl);
 app.use('/profile', profileCtrl);
+app.use('/home', homeCtrl);
 
 // App Listen
 app.listen(PORT, ()=> {

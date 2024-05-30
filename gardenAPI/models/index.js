@@ -14,4 +14,5 @@ db.on('connected', function() {
 module.exports = {
     User: require('./user'),
     UserProfile: require('./userProfile'),
+    Challenges: require('./challenges'),
   };
