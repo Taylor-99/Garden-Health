@@ -41,7 +41,7 @@ const profileSchema = new mongoose.Schema({
         type: mongoose.Types.ObjectId, 
         ref: 'User'
     },
-    
+
 });
 
 module.exports = mongoose.model("UserProfile", profileSchema);

@@ -2,14 +2,13 @@
 const mongoose = require('mongoose');
 
 const plantSchema = new mongoose.Schema({
-  plantName: { 
-    type: String, 
-    unique: true, 
-    required: true 
-    },
-  plantType: { 
-    type: String, 
-    },
+    plantName: { 
+        type: String, 
+        required: true 
+        },
+    plantType: { 
+        type: String, 
+        },
     user:{
         type: mongoose.Types.ObjectId, 
         ref: 'User'
