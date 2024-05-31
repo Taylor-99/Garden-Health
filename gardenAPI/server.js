@@ -8,12 +8,9 @@ const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
 
-// Require the db connection and models
-const db = require('./models');
-
 userCtrl = require('./contollers/userController');
 profileCtrl = require('./contollers/profileController');
-homeCtrl = require('./contollers/homeController');
+dashCtrl = require('./contollers/dashboardController');
 
 const PORT = process.env.PORT||3000;
 
@@ -52,7 +49,7 @@ app.use(cookieParser());
 
 app.use('/auth', userCtrl);
 app.use('/profile', profileCtrl);
-app.use('/home', homeCtrl);
+app.use('/dash', dashCtrl);
 
 // App Listen
 app.listen(PORT, ()=> {
