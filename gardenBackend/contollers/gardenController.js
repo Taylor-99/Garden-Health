@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = require('../middleware/VerifyJWT');
 
-
+// Index
 router.get('/garden', verifyToken, async (req, res) =>{
 
     try {
@@ -39,28 +39,13 @@ router.get('/garden', verifyToken, async (req, res) =>{
 
 });
 
-router.get('/details/:plantID', verifyToken, async (req, res) =>{
-
-    try {
-
-        const plant = await db.Plant.findById(req.params.plantID)
-
-        const plantUpdates = await db.PlantUpdate.find({ plant: req.params.plantID});
-
-        let plantDetails = [
-            plant,
-            plantUpdates
-        ];
-
-        res.json(plantDetails)
-        
-    } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
-    }
-
+// Delete
+router.delete('/delete/:plantId', async (req, res) =>{
+    await db.Plant.findByIdAndDelete( req.params.plantId )
+    await db.PlantUpdate.remove({ plant: req.params.plantId })
 });
 
+// Update
 router.get('/water/:plantID', verifyToken, async (req, res) =>{
 
     try {
@@ -113,6 +98,7 @@ async function createNewPlantUpdate(plantId, updateData) {
     await createdUpdate.save();
 }
 
+// Create
 router.post('/create', verifyToken, async (req, res) =>{
 
     try {
@@ -136,6 +122,7 @@ router.post('/create', verifyToken, async (req, res) =>{
 
 });
 
+//Create
 router.post('/update/:plantId', verifyToken, async (req, res) =>{
 
     try {
@@ -151,64 +138,27 @@ router.post('/update/:plantId', verifyToken, async (req, res) =>{
 
 });
 
-async function fetchPlantList(pageNum) {
+// Show
+router.get('/details/:plantID', verifyToken, async (req, res) =>{
 
-    // let pageNumber = Math.floor(Math.random() * (405 - 1 + 1) + 1)
+    try {
 
-    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&page=${pageNum}`);
+        const plant = await db.Plant.findById(req.params.plantID)
 
-    if (!plantAPIResponse.ok) {
-        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
+        const plantUpdates = await db.PlantUpdate.find({ plant: req.params.plantID});
+
+        let plantDetails = [
+            plant,
+            plantUpdates
+        ];
+
+        res.json(plantDetails)
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
     }
-    const plantData = await plantAPIResponse.json();
-    if (!plantData.data || plantData.length === 0) {
-        throw new Error('No plant data found');
-    }
-    return plantData;
-};
 
-async function fetchPlantDetails(sName) {
-
-    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&filter[scientific_name]=${sName}`);
-
-    if (!plantAPIResponse.ok) {
-        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
-    }
-    const plantData = await plantAPIResponse.json();
-    if (!plantData.data || plantData.length === 0) {
-        throw new Error('No plant data found');
-    }
-    return plantData;
-};
-
-router.get('/getplants', verifyToken, async (req, res) =>{
-
-    try{
-
-        const page = req.query.page ? parseInt(req.query.page, 10) : 1; // Default to page 1 if not provided
-        const plantData = await fetchPlantList(page);
-        res.json(plantData);
-
-    }catch (error) {
-        // Log error and throw it up the chain
-        console.error("Error fetching data from API:", error);
-        throw error;
-      }
 });
-
-router.get('/getplants/detail/:sName', verifyToken, async (req, res) =>{
-
-    try{
-        const plantDetails = await fetchPlantDetails(req.params.sName);
-        res.json(plantDetails);
-
-    }catch (error) {
-        // Log error and throw it up the chain
-        console.error("Error fetching data from API:", error);
-        throw error;
-      }
-});
-
-
 
 module.exports = router
