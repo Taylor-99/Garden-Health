@@ -115,6 +115,8 @@ function createToken(userID){
         process.env.SECRET, 
         { expiresIn: 3 * 24 * 60 * 60,}
     );
- }
+ };https://www.freecodecamp.org/news/how-to-secure-your-mern-stack-application/
+
+ //
 
 module.exports = router

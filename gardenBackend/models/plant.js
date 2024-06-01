@@ -6,8 +6,14 @@ const plantSchema = new mongoose.Schema({
         type: String, 
         required: true 
         },
-    plantType: { 
-        type: String, 
+    plantSpecies: { 
+        type: String,  
+        },
+    watered: { 
+        type: Boolean, 
+        },
+    plantDate: { 
+        type: Date, 
         },
     user:{
         type: mongoose.Types.ObjectId, 

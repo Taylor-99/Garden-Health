@@ -22,4 +22,5 @@ module.exports = {
     CommunityPost: require('./communityPost'),
     PostComment: require('./postComment'),
     Challenges: require('./challenges'),
+    Reminder: require('./reminder'),
   };

@@ -11,6 +11,7 @@ const cookieParser = require("cookie-parser");
 userCtrl = require('./contollers/userController');
 profileCtrl = require('./contollers/profileController');
 dashCtrl = require('./contollers/dashboardController');
+plantCtrl = require('./contollers/plantController');
 
 const PORT = process.env.PORT||3000;
 
@@ -50,6 +51,7 @@ app.use(cookieParser());
 app.use('/auth', userCtrl);
 app.use('/profile', profileCtrl);
 app.use('/dash', dashCtrl);
+app.use('/plants', plantCtrl);
 
 // App Listen
 app.listen(PORT, ()=> {

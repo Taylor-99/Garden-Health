@@ -2,7 +2,19 @@
 const mongoose = require('mongoose');
 
 const plantUpdateSchema = new mongoose.Schema({
-    images: { 
+    plantImage: { 
+        type: String,
+        },
+    temperature: { 
+        type: String,
+        },
+    rain: { 
+        type: Boolean,
+        },
+    health: { 
+        type: String,
+        },
+    fertilizer: { 
         type: String,
         },
     notes: { 

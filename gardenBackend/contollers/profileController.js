@@ -8,11 +8,8 @@ const verifyToken = require('../middleware/VerifyJWT')
 //create profile
 router.post('/createprofile', verifyToken, async (req, res) => {
 
-    console.log(req.user)
-
     try {
         const user = await db.User.findById(req.user.userID);
-        console.log(user)
 
         if (!user) {
         return res.status(404).json({ message: "User not found" });
