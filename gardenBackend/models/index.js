@@ -14,4 +14,13 @@ db.on('connected', function() {
 module.exports = {
     User: require('./user'),
     UserProfile: require('./userProfile'),
+    Plant: require('./plant'),
+    PlantUpdate: require('./plantUpdate'),
+    Mood: require('./mood'),
+    Journal: require('./journalEntry'),
+    Activity: require('./activity'),
+    CommunityPost: require('./communityPost'),
+    PostComment: require('./postComment'),
+    Challenges: require('./challenges'),
+    Reminder: require('./reminder'),
   };

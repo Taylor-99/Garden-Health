@@ -3,33 +3,13 @@ const router = require('express').Router();
 const db  = require('../models');
 const jwt = require('jsonwebtoken');
 
-// Middleware to verify token
-const verifyToken = (req, res, next) => {
-    const token = req.cookies.token;
-
-    console.log(token)
-
-    if (!token) {
-        return res.status(401).json({ message: 'Access Denied' });
-    }
-    try {
-        const verified = jwt.verify(token, process.env.SECRET);
-        req.user = verified;
-        next();
-
-    } catch (err) {
-        res.status(400).json({ message: 'Invalid Token' });
-    }
-};
+const verifyToken = require('../middleware/VerifyJWT')
 
 //create profile
 router.post('/createprofile', verifyToken, async (req, res) => {
 
-    console.log(req.user)
-
     try {
         const user = await db.User.findById(req.user.userID);
-        console.log(user)
 
         if (!user) {
         return res.status(404).json({ message: "User not found" });
@@ -45,7 +25,8 @@ router.post('/createprofile', verifyToken, async (req, res) => {
             gardeningExperience: req.body.gExperience,
             activityExperience: req.body.aExperience,
             bio: req.body.bio,
-            level: "starter",
+            level: "Level 0 - Starter",
+            favorite_plants: [],
             user: req.user.userID
         };
 

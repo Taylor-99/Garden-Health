@@ -3,6 +3,7 @@ const router = require('express').Router();
 const db  = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const verifyToken = require('../middleware/VerifyJWT');
 
 // signup route
 router.post('/signup', async (req, res, next) => {
@@ -59,7 +60,8 @@ router.post('/login', async (req, res, next) => {
                 }else {
                     // make a token
                     const token = createToken(user._id)
-                    res.json({token, user})
+                    // console.log(token)
+                    // res.json({token, user})
 
                     res.cookie("token", token, {
                         withCredentials: true,
@@ -99,6 +101,13 @@ router.post('/', async (req, res) => {
     })
   })
 
+router.get('/logout', verifyToken, (req, res) => {
+    return res
+    .clearCookie("token")
+    .status(200)
+    .json({ message: "Successfully logged out" });
+});
+
 // createToken
 function createToken(userID){
     return jwt.sign(
@@ -106,6 +115,8 @@ function createToken(userID){
         process.env.SECRET, 
         { expiresIn: 3 * 24 * 60 * 60,}
     );
- }
+ };https://www.freecodecamp.org/news/how-to-secure-your-mern-stack-application/
+
+ //
 
 module.exports = router

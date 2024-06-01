@@ -18,7 +18,7 @@ const profileSchema = new mongoose.Schema({
     },
     city: {
         type: String,
-    },
+    },      
     state: {
         type: String,
     },
@@ -34,10 +34,14 @@ const profileSchema = new mongoose.Schema({
     level: {
         type: String,
     },
+    favorite_plants: { 
+        type: [String], 
+        default: [] },
     user:{
         type: mongoose.Types.ObjectId, 
         ref: 'User'
-    }
+    },
+
 });
 
 module.exports = mongoose.model("UserProfile", profileSchema);
