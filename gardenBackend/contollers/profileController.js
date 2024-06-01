@@ -26,6 +26,7 @@ router.post('/createprofile', verifyToken, async (req, res) => {
             activityExperience: req.body.aExperience,
             bio: req.body.bio,
             level: "Level 0 - Starter",
+            favorite_plants: [],
             user: req.user.userID
         };
 

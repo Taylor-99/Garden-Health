@@ -36,6 +36,21 @@ async function fetchPlantDetails(sName) {
     return plantData;
 };
 
+async function fetchPlantSearch(searchTerm, page) {
+
+    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${searchTerm}&page${page}`);
+
+    if (!plantAPIResponse.ok) {
+        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
+    }
+    const plantData = await plantAPIResponse.json();
+    if (!plantData.data || plantData.length === 0) {
+        throw new Error('No plant data found');
+    }
+    return plantData;
+};
+
+// show
 router.get('/getplants', verifyToken, async (req, res) =>{
 
     try{
@@ -51,7 +66,8 @@ router.get('/getplants', verifyToken, async (req, res) =>{
       }
 });
 
-router.get('/getplants/detail/:sName', verifyToken, async (req, res) =>{
+// Show
+router.get('/detail/:sName', verifyToken, async (req, res) =>{
 
     try{
         const plantDetails = await fetchPlantDetails(req.params.sName);
@@ -64,6 +80,49 @@ router.get('/getplants/detail/:sName', verifyToken, async (req, res) =>{
       }
 });
 
+// Show
+router.get('/search/:searchTerm', verifyToken, async (req, res) =>{
 
+    try{
+        const page = req.query.page ? parseInt(req.query.page, 10) : 1; // Default to page 1 if not provided
+
+        const plantSearch = await fetchPlantSearch(req.params.searchTerm, page);
+        res.json(plantSearch);
+
+    }catch (error) {
+        // Log error and throw it up the chain
+        console.error("Error fetching data from API:", error);
+        throw error;
+      }
+});
+
+// Update
+router.get('/favorites/:sName', verifyToken, async (req, res) => {
+
+    try{
+
+        const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
+
+        if (!userProfile) {
+            return res.status(404).json({ message: "User profile not found" });
+        }
+
+        if (!userProfile.favorite_plants) {
+            userProfile.favorite_plants = [];
+        }
+
+        userProfile.favorite_plants.push(req.params.sName);
+
+        await userProfile.save()
+
+        res.send(userProfile)
+
+    }catch (error) {
+        // Log error and throw it up the chain
+        console.error("Error fetching data from API:", error);
+        throw error;
+      }
+
+})
 
 module.exports = router

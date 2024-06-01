@@ -34,9 +34,9 @@ const profileSchema = new mongoose.Schema({
     level: {
         type: String,
     },
-    favorite_plants: {
-        type: Array,
-    },
+    favorite_plants: { 
+        type: [String], 
+        default: [] },
     user:{
         type: mongoose.Types.ObjectId, 
         ref: 'User'
