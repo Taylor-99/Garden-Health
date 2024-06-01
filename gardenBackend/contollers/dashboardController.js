@@ -2,9 +2,9 @@
 require('dotenv').config();
 const router = require('express').Router();
 const db  = require('../models');
-const jwt = require('jsonwebtoken');
 
 const verifyToken = require('../middleware/VerifyJWT')
+
 const challengesData = require('../data/challenges')
 const remindersData = require('../data/reminders')
 

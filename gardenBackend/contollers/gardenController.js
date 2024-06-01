@@ -5,41 +5,8 @@ const db  = require('../models');
 
 const verifyToken = require('../middleware/VerifyJWT');
 
-// Index
-router.get('/garden', verifyToken, async (req, res) =>{
-
-    try {
-
-        const userPlants = await db.Plant.find({ user: req.user.userID})
-
-        if(userPlants.length !== 0){
-
-            let updateList = [];
-
-            for(const plant of userPlants){
-                const userPlantUpdates = await db.PlantUpdate.find({ plant: plant._id}).sort({ createdAt: -1 });
-
-                let lastUpdate = userPlantUpdates.length > 0 ? userPlantUpdates[0] : null;
-
-                updateList.push([
-                    plant,
-                    lastUpdate
-                ]);
-            };
-
-            res.json(updateList);
-
-        }
-        
-    } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
-    }
-
-});
-
 // Delete
-router.delete('/delete/:plantId', async (req, res) =>{
+router.delete('/:plantId', async (req, res) =>{
     await db.Plant.findByIdAndDelete( req.params.plantId )
     await db.PlantUpdate.remove({ plant: req.params.plantId })
 });
@@ -130,6 +97,35 @@ router.post('/update/:plantId', verifyToken, async (req, res) =>{
 
         return res.json({ message:'plant updated' })
         
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
+
+});
+
+// Show
+router.get('/', verifyToken, async (req, res) =>{
+
+    try {
+
+        const userPlants = await db.Plant.find({ user: req.user.userID});
+
+        let updateList = [];
+
+        for(const plant of userPlants){
+            const userPlantUpdates = await db.PlantUpdate.find({ plant: plant._id}).sort({ createdAt: -1 });
+
+            let lastUpdate = userPlantUpdates.length > 0 ? userPlantUpdates[0] : null;
+
+            updateList.push([
+                plant,
+                lastUpdate
+            ]);
+        };
+
+        res.json(updateList);
+
     } catch (error) {
         console.error(error.message);
         res.status(400).send(error.message);

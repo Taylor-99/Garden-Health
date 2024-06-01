@@ -111,9 +111,11 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
             userProfile.favorite_plants = [];
         }
 
-        userProfile.favorite_plants.push(req.params.sName);
-
-        await userProfile.save()
+        // Check if the plant is already in the favorites
+        if (!userProfile.favorite_plants.includes(req.params.sName)) {
+            userProfile.favorite_plants.push(req.params.sName);
+            await userProfile.save();
+        }
 
         res.send(userProfile)
 
@@ -123,6 +125,35 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
         throw error;
       }
 
-})
+});
+
+// Delete
+router.delete('/favorites/:sName', verifyToken, async (req, res) => {
+    try {
+        const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
+
+        if (!userProfile) {
+            return res.status(404).json({ message: "User profile not found" });
+        }
+
+        if (!userProfile.favorite_plants) {
+            userProfile.favorite_plants = [];
+        }
+
+        // Remove the plant from the favorites
+        userProfile.favorite_plants = userProfile.favorite_plants.filter(
+            (plant) => plant !== req.params.sName
+        );
+
+        await userProfile.save();
+
+        res.json(userProfile);
+
+    } catch (error) {
+        console.error("Error removing from favorite plants:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+
 
 module.exports = router

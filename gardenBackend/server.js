@@ -7,12 +7,16 @@ const morgan = require('morgan')
 const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
+const activity = require('./models/activity');
 
 userCtrl = require('./contollers/userController');
 profileCtrl = require('./contollers/profileController');
 dashCtrl = require('./contollers/dashboardController');
 gardenCtrl = require('./contollers/gardenController');
 plantCtrl = require('./contollers/plantLibraryController');
+moodCtrl = require('./contollers/moodController');
+activityCtrl = require('./contollers/activityController');
+socialCtrl = require('./contollers/postController');
 
 const PORT = process.env.PORT||3000;
 
@@ -54,6 +58,9 @@ app.use('/profile', profileCtrl);
 app.use('/dash', dashCtrl);
 app.use('/garden', gardenCtrl);
 app.use('/plantlibrary', plantCtrl);
+app.use('/mood', moodCtrl);
+app.use('/activity', activityCtrl);
+app.use('/social', socialCtrl);
 
 // App Listen
 app.listen(PORT, ()=> {
