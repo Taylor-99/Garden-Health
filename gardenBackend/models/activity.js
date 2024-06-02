@@ -6,7 +6,7 @@ const moodSchema = new mongoose.Schema({
         type: String, 
     },
     duration: { 
-        type: String, 
+        type: Number, 
     },
     outdoors: { 
         type: Boolean, 
