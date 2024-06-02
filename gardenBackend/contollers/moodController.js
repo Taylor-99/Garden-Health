@@ -21,11 +21,65 @@ router.get('/', verifyToken, async (req, res) => {
 
 });
 
+// Show
+router.get('/:moodId', verifyToken, async (req, res) => {
+
+    try {
+
+        const userJournalEntry = await db.Journal.find({ mood: req.user.moodId})
+
+        res.send(userJournalEntry)
+        
+    } catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
+
+});
+
 // Delete
 router.delete('/:moodId', async (req, res) =>{
     await db.Mood.findByIdAndDelete( req.params.moodId );
     await db.Journal.findOneAndDelete( { mood: req.params.moodId });
 });
+
+// Update
+router.put('/:moodid', async (req, res) => {
+
+    try{
+
+        // Find the existing mood
+        const pastMood = await db.Mood.findById(moodId);
+        if (!pastMood) {
+            return res.status(404).json({ message: "Mood not found" });
+        }
+        
+        let pastJournal = pastMood.journal
+
+        await db.Mood.findByIdAndUpdate(req.params.moodid, 
+            {
+                overallMood: req.body.overallMood,
+                energyLevel: req.body.energyLevel,
+                stressLevel: req.body.stressLevel,
+                journalEntry: req.body.journal
+            }
+        );
+
+        if(req.body.journal === false && pastJournal === true){
+            await db.Journal.findOneAndDelete( { mood: req.params.moodid });
+        }
+        else if(req.body.journal === true && pastJournal === false){
+            createJournal(moodid, req.body.journalEntry)
+        }else{
+            await db.Journal.findOneAndUpdate({ mood: req.params.moodid}, { entry: req.body.journalEntry})
+        }
+
+    }catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
+
+})
 
 async function cerateMood(userId, moodData) {
 
