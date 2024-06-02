@@ -106,7 +106,7 @@ async function createJournal(moodId, journalEntry) {
 
     const createdEntry = await db.Journal.create(newEntry);
     await createdEntry.save();
-}
+};
 
 // Create - Mood Log and Journal
 router.post('/create', verifyToken, async (req, res) =>{
