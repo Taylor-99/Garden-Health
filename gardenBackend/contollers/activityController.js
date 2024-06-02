@@ -2,8 +2,6 @@
 require('dotenv').config();
 const router = require('express').Router();
 const db  = require('../models');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
 const verifyToken = require('../middleware/VerifyJWT');
 
 // Show
@@ -42,7 +40,7 @@ router.put('/:activityId', async (req, res) => {
         res.status(400).send(error.message);
     }
 
-})
+});
 
 async function createActivity(activityId, activityData) {
 
