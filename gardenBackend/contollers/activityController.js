@@ -14,8 +14,8 @@ router.get('/', verifyToken, async (req, res) => {
         res.send(userActivity)
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error getting Activity:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
 
 });
@@ -48,8 +48,8 @@ router.put('/:activityId', async (req, res) => {
         );
 
     }catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error updating activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
@@ -81,11 +81,11 @@ router.post('/create', verifyToken, async (req, res) =>{
 
         await createActivity(req.user.userID, req.body);
 
-        return res.json({ message:'created Activity' })
+        return res.status(201).json({ message: 'Activity created successfully', post: createdPost });
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error creating activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
@@ -104,8 +104,8 @@ router.get('/edit/:activityId', async(req, res) => {
         res.json(activity);
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error fetching activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
