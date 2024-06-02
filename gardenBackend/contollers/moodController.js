@@ -79,7 +79,7 @@ router.put('/:moodid', async (req, res) => {
         res.status(400).send(error.message);
     }
 
-})
+});
 
 async function cerateMood(userId, moodData) {
 

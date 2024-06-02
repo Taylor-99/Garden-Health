@@ -28,7 +28,21 @@ router.delete('/:activeId', async (req, res) =>{
 });
 
 // Update
+router.put('/:activityId', async (req, res) => {
 
+    try{
+
+        await db.Mood.findByIdAndUpdate(
+            req.params.activityId, 
+            req.body,
+        );
+
+    }catch (error) {
+        console.error(error.message);
+        res.status(400).send(error.message);
+    }
+
+})
 
 async function createActivity(activityId, activityData) {
 
