@@ -42,5 +42,18 @@ router.post('/createprofile', verifyToken, async (req, res) => {
 });
 
 // Show Profile
+router.get('/', verifyToken, async (req, res) => {
+    try {
+
+        const userProfile = await db.UserProfile.find({ user: req.user.userID})
+
+        res.send(userProfile)
+        
+    } catch (error) {
+        console.error("Error getting Profile:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+
+})
 
 module.exports = router
