@@ -161,26 +161,62 @@ router.put('/:postId', async (req, res) => {
         res.json(updatedPost);
 
     }catch (error) {
-        console.error("Error updating activity:", error.message);
+        console.error("Error updating Post:", error.message);
         res.status(400).json({ message: error.message });
     }
 
 });
 
-async function createPost(activityId, postData) {
+// Update Reply
+router.put('/:replyId', async (req, res) => {
+
+    try{
+
+        // Construct the update object based on provided data
+        const updateData = {};
+        if (req.body.reply) updateData.reply = req.body.reply;
+        if (req.body.image) updateData.image = req.body.image;
+
+        // Ensure that either reply or image or both are provided
+        if (!req.body.reply && !req.body.image) {
+            return res.status(400).json({ message: 'No reply or image provided for update' });
+        }
+
+        // Update the post comment
+        const updatedReply = await db.PostComment.findByIdAndUpdate(
+            req.params.replyId,
+            updateData,
+            { new: true } // Return the updated document
+        );
+
+        // Check if the reply was found and updated
+        if (!updatedReply) {
+            return res.status(404).json({ message: 'Reply not found' });
+        };
+
+        res.json(updatedReply);
+
+    }catch (error) {
+        console.error("Error updating reply:", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
+async function createPost(userId, postData) {
 
     const newPost = {
         post: postData.post,
         image: postData.image,
         likes: 0,
-        user: activityId,
+        user: userId,
     };
 
-    const createdPost = await db.Activity.create(newPost);
+    const createdPost = await db.CommunityPost.create(newPost);
     await createdPost.save();
 };
 
-// Create 
+// Create Post
 router.post('/create', verifyToken, async (req, res) =>{
 
     try {
@@ -193,10 +229,46 @@ router.post('/create', verifyToken, async (req, res) =>{
 
         await createPost(req.user.userID, req.body);
 
-        return res.status(201).json({ message: 'Post created successfully', post: createdPost });
+        return res.status(201).json({ message: 'Post created successfully'});
         
     } catch (error) {
         console.error("Error creating post:", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
+async function createReply(userId, postId, replyData) {
+
+    const newReply = {
+        reply: replyData.reply,
+        image: replyData.image,
+        likes: 0,
+        post: postId,
+        user: userId,
+    };
+
+    const createdReply = await db.PostComment.create(newReply);
+    await createdReply.save();
+};
+
+// Create Reply
+router.post('/create/:postId', verifyToken, async (req, res) =>{
+
+    try {
+
+        const user = await db.User.findById(req.user.userID);
+
+        if (!user) {
+        return res.status(404).json({ message: "User not found" });
+        }
+
+        await createReply(req.user.userID, req.params.postId, req.body);
+
+        return res.status(201).json({ message: 'Reply created successfully'});
+        
+    } catch (error) {
+        console.error("Error creating reply:", error.message);
         res.status(400).json({ message: error.message });
     }
 
@@ -221,6 +293,30 @@ router.get('/edit/:postId', async(req, res) => {
         
     } catch (error) {
         console.error("Error fetching post:", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
+// Edit Reply
+router.get('/edit/:replyId', async(req, res) => {
+
+    try {
+
+        const reply = await db.PostComment.findById(req.params.replyId);
+
+        if (!reply) {
+        return res.status(404).json({ message: "Post not found" });
+        }
+
+        if(req.user.userID !== reply.user){
+            return res.status(403).json({ message: 'Unauthorized to edit this post' });
+        };
+
+        res.json(reply);
+        
+    } catch (error) {
+        console.error("Error fetching reply:", error.message);
         res.status(400).json({ message: error.message });
     }
 

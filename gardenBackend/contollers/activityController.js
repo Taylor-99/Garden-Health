@@ -54,14 +54,14 @@ router.put('/:activityId', async (req, res) => {
 
 });
 
-async function createActivity(activityId, activityData) {
+async function createActivity(userId, activityData) {
 
     const newActivity = {
         activity: activityData.activity,
         duration: activityData.duration,
         outdoors: activityData.outdoors,
         activity_mood: activityData.aMood,
-        user: activityId,
+        user: userId,
     };
 
     const createdActivity = await db.Activity.create(newActivity);
