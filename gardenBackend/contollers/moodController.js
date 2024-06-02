@@ -5,7 +5,7 @@ const db  = require('../models');
 
 const verifyToken = require('../middleware/VerifyJWT');
 
-// Show
+// Show - Mood
 router.get('/', verifyToken, async (req, res) => {
 
     try {
@@ -21,7 +21,7 @@ router.get('/', verifyToken, async (req, res) => {
 
 });
 
-// Show
+// Show - Jounal Entry
 router.get('/:moodId', verifyToken, async (req, res) => {
 
     try {
@@ -37,13 +37,13 @@ router.get('/:moodId', verifyToken, async (req, res) => {
 
 });
 
-// Delete
+// Delete - Mood and Journal Entry
 router.delete('/:moodId', async (req, res) =>{
     await db.Mood.findByIdAndDelete( req.params.moodId );
     await db.Journal.findOneAndDelete( { mood: req.params.moodId });
 });
 
-// Update
+// Update - Mood log and Journal
 router.put('/:moodid', async (req, res) => {
 
     try{
@@ -53,7 +53,7 @@ router.put('/:moodid', async (req, res) => {
         if (!pastMood) {
             return res.status(404).json({ message: "Mood not found" });
         }
-        
+
         let pastJournal = pastMood.journal
 
         await db.Mood.findByIdAndUpdate(req.params.moodid, 
@@ -108,7 +108,7 @@ async function createJournal(moodId, journalEntry) {
     await createdEntry.save();
 }
 
-// Create
+// Create - Mood Log and Journal
 router.post('/create', verifyToken, async (req, res) =>{
 
     try {
@@ -136,7 +136,7 @@ router.post('/create', verifyToken, async (req, res) =>{
 
 });
 
-// edit
+// edit - Mood log and Journal
 router.get('/edit/:moodId', async(req, res) => {
 
     try {
