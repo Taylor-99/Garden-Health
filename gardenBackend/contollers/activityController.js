@@ -22,4 +22,9 @@ router.get('/', verifyToken, async (req, res) => {
 
 });
 
+// Delete 
+router.delete('/:activeId', async (req, res) =>{
+    await db.Activity.findByIdAndDelete( req.params.activeId );
+});
+
 module.exports = router
