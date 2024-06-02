@@ -39,8 +39,21 @@ router.get('/:moodId', verifyToken, async (req, res) => {
 
 // Delete - Mood and Journal Entry
 router.delete('/:moodId', async (req, res) =>{
-    await db.Mood.findByIdAndDelete( req.params.moodId );
-    await db.Journal.findOneAndDelete( { mood: req.params.moodId });
+
+    try{
+        const deletedMood = await db.Mood.findByIdAndDelete( req.params.moodId );
+        if (!deletedMood) {
+            return res.status(404).json({ message: 'Mood not found' });
+        }
+
+        await db.Journal.findOneAndDelete( { mood: req.params.moodId });
+
+        res.status(200).json({ message: 'Mood and associated journal entry deleted successfully' });
+
+    } catch (error) {
+        console.error("Error deleting mood and journal entry:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 // Update - Mood log and Journal
@@ -75,7 +88,7 @@ router.put('/:moodid', async (req, res) => {
         }
 
     }catch (error) {
-        console.error(error.message);
+        console.error("Error updating mood:", error.message);
         res.status(400).send(error.message);
     }
 

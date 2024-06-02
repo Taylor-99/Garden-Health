@@ -22,7 +22,19 @@ router.get('/', verifyToken, async (req, res) => {
 
 // Delete 
 router.delete('/:activeId', async (req, res) =>{
-    await db.Activity.findByIdAndDelete( req.params.activeId );
+    try{
+        // Delete the activity
+        const deletedActivity = await db.Activity.findByIdAndDelete( req.params.activeId );
+        if (!deletedActivity) {
+            return res.status(404).json({ message: 'Activity not found' });
+        }
+
+        res.status(200).json({ message: 'Activity deleted successfully' });
+
+    }catch (error) {
+        console.error("Error deleting activity:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 // Update

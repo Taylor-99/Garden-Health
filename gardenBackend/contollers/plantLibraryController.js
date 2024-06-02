@@ -120,10 +120,9 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
         res.send(userProfile)
 
     }catch (error) {
-        // Log error and throw it up the chain
-        console.error("Error fetching data from API:", error);
-        throw error;
-      }
+        console.error("Error adding to favorite plants:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
 
 });
 
