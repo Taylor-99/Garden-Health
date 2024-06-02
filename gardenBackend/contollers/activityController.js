@@ -14,15 +14,27 @@ router.get('/', verifyToken, async (req, res) => {
         res.send(userActivity)
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error getting Activity:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
     }
 
 });
 
 // Delete 
 router.delete('/:activeId', async (req, res) =>{
-    await db.Activity.findByIdAndDelete( req.params.activeId );
+    try{
+        // Delete the activity
+        const deletedActivity = await db.Activity.findByIdAndDelete( req.params.activeId );
+        if (!deletedActivity) {
+            return res.status(404).json({ message: 'Activity not found' });
+        }
+
+        res.status(200).json({ message: 'Activity deleted successfully' });
+
+    }catch (error) {
+        console.error("Error deleting activity:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 });
 
 // Update
@@ -36,20 +48,20 @@ router.put('/:activityId', async (req, res) => {
         );
 
     }catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error updating activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
 
-async function createActivity(activityId, activityData) {
+async function createActivity(userId, activityData) {
 
     const newActivity = {
         activity: activityData.activity,
         duration: activityData.duration,
         outdoors: activityData.outdoors,
         activity_mood: activityData.aMood,
-        user: activityId,
+        user: userId,
     };
 
     const createdActivity = await db.Activity.create(newActivity);
@@ -69,11 +81,11 @@ router.post('/create', verifyToken, async (req, res) =>{
 
         await createActivity(req.user.userID, req.body);
 
-        return res.json({ message:'created Activity' })
+        return res.status(201).json({ message: 'Activity created successfully', post: createdPost });
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error creating activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
@@ -92,8 +104,8 @@ router.get('/edit/:activityId', async(req, res) => {
         res.json(activity);
         
     } catch (error) {
-        console.error(error.message);
-        res.status(400).send(error.message);
+        console.error("Error fetching activity:", error.message);
+        res.status(400).json({ message: error.message });
     }
 
 });
