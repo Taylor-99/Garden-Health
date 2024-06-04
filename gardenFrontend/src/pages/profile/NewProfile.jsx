@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 const CreateProfile = () => {
     const [profileData, setProfileData] = useState({
@@ -15,7 +15,7 @@ const CreateProfile = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const navigate = useNavigate;
+    const navigate = useRouter;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,7 +38,7 @@ const CreateProfile = () => {
 
             if (response.ok) {
                 setSuccess('Profile created successfully');
-                navigate('/')
+                navigate.replace('/')
             } else {
                 setError(data.message);
             }

@@ -1,16 +1,21 @@
 
+// Load environment variables from .env file
 require('dotenv').config();
+
+// Import required modules
 const router = require('express').Router();
 const db  = require('../models');
+
 const verifyToken = require('../middleware/VerifyJWT');
 
 // Show
 router.get('/', verifyToken, async (req, res) => {
 
     try {
-
+        // Find user activity based on the user ID
         const userActivity = await db.Activity.find({ user: req.user.userID})
 
+        // Send the user activity data
         res.send(userActivity)
         
     } catch (error) {
@@ -23,12 +28,15 @@ router.get('/', verifyToken, async (req, res) => {
 // Delete 
 router.delete('/:activeId', async (req, res) =>{
     try{
-        // Delete the activity
+        // Delete the activity using its ID
         const deletedActivity = await db.Activity.findByIdAndDelete( req.params.activeId );
+
+        // If activity doesn't exist, return 404 status with a message
         if (!deletedActivity) {
             return res.status(404).json({ message: 'Activity not found' });
         }
 
+        // Send a success message if activity is deleted
         res.status(200).json({ message: 'Activity deleted successfully' });
 
     }catch (error) {
@@ -41,7 +49,7 @@ router.delete('/:activeId', async (req, res) =>{
 router.put('/:activityId', async (req, res) => {
 
     try{
-
+        // Update the activity using its ID and the data from the request body
         await db.Mood.findByIdAndUpdate(
             req.params.activityId, 
             req.body,
@@ -54,8 +62,10 @@ router.put('/:activityId', async (req, res) => {
 
 });
 
+// Function to create a new activity
 async function createActivity(userId, activityData) {
 
+    // Define the new activity object with provided data
     const newActivity = {
         activity: activityData.activity,
         duration: activityData.duration,
@@ -64,23 +74,27 @@ async function createActivity(userId, activityData) {
         user: userId,
     };
 
+    // Create the activity in the database
     const createdActivity = await db.Activity.create(newActivity);
-    await createdActivity.save();
+    await createdActivity.save(); // Save the created activity
 };
 
 // Create 
 router.post('/create', verifyToken, async (req, res) =>{
 
     try {
-
+        // Find the user by their ID
         const user = await db.User.findById(req.user.userID);
 
+        // Return 404 status with a message if user is not found
         if (!user) {
         return res.status(404).json({ message: "User not found" });
         }
 
+        // Call the createActivity function to create a new activity
         await createActivity(req.user.userID, req.body);
 
+        // Return a success message with 201 status
         return res.status(201).json({ message: 'Activity created successfully', post: createdPost });
         
     } catch (error) {
@@ -94,13 +108,15 @@ router.post('/create', verifyToken, async (req, res) =>{
 router.get('/edit/:activityId', async(req, res) => {
 
     try {
-
+        // Find the activity by its ID
         const activity = await db.Activity.findById(req.params.activityId);
 
+        // Return 404 status with a message if activity is not found
         if (!activity) {
         return res.status(404).json({ message: "Activity not found" });
         }
 
+        // Return the activity details
         res.json(activity);
         
     } catch (error) {
