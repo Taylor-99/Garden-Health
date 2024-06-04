@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import fetch from 'isomorphic-unfetch'
 
 const CreateProfile = () => {
     const [profileData, setProfileData] = useState({
@@ -15,7 +16,7 @@ const CreateProfile = () => {
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
 
-    const navigate = useRouter;
+    const navigate = useRouter();
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -23,9 +24,8 @@ const CreateProfile = () => {
     };
 
     const handleSubmit = async () => {
-        console.log(profileData)
         try {
-            const response = await fetch('http://localhost:3000/profile/createprofile', {
+            const response = await fetch('http://localhost:4000/profile/createprofile', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -35,6 +35,7 @@ const CreateProfile = () => {
             });
 
             const data = await response.json();
+            console.log(data)
 
             if (response.ok) {
                 setSuccess('Profile created successfully');

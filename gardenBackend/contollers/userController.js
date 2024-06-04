@@ -69,6 +69,8 @@ router.post('/login', async (req, res, next) => {
                     // make a token
                     const token = createToken(user._id)
 
+                    console.log(token)
+
                     res.cookie("token", token, {
                         withCredentials: true,
                         httpOnly: false,
@@ -83,6 +85,7 @@ router.post('/login', async (req, res, next) => {
         }
 
     } catch (error) {
+        console.log('backend')
         console.error(error);
     }
 });

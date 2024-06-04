@@ -2,9 +2,9 @@ import { useState } from 'react'
 import './App.css'
 import { Route, Routes } from "react-router-dom";
 
-import Home from "../gardenFrontend/src/pages/Home";
+import Home from "../Next Stuff/pages/Home";
 import Auth from "./components/Auth"
-import CreateProfile from "../gardenFrontend/src/pages/profile/NewProfile"
+import CreateProfile from "../Next Stuff/pages/profile/NewProfile"
 
 
 function App() {
