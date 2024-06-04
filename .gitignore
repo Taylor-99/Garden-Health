@@ -13,8 +13,7 @@ gardenUI/node_modules
 dist
 dist-ssr
 *.local
-gardenUI/.env
-gardenAPI/.env
+/.env
 
 # Editor directories and files
 .vscode/*
