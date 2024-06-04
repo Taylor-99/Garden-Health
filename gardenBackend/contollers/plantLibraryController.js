@@ -1,76 +1,86 @@
 
+// Load environment variables from .env file
 require('dotenv').config();
+
+// Import required modules
 const router = require('express').Router();
 const db  = require('../models');
-const jwt = require('jsonwebtoken');
 
 const verifyToken = require('../middleware/VerifyJWT');
 
+// Function to fetch a list of plants from an external API
 async function fetchPlantList(pageNum) {
 
-    // let pageNumber = Math.floor(Math.random() * (405 - 1 + 1) + 1)
-
+    // Make an API request to fetch plant data based on the provided page number
     const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&page=${pageNum}`);
 
+    // Check if the API request was successful
     if (!plantAPIResponse.ok) {
         throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
-    }
+    };
+
+    // Parse the JSON response
     const plantData = await plantAPIResponse.json();
+
+    // Check if plant data exists and is not empty
     if (!plantData.data || plantData.length === 0) {
         throw new Error('No plant data found');
-    }
+    };
+
+    // Return the fetched plant data
     return plantData;
 };
 
-async function fetchPlantDetails(sName) {
-
-    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&filter[scientific_name]=${sName}`);
-
-    if (!plantAPIResponse.ok) {
-        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
-    }
-    const plantData = await plantAPIResponse.json();
-    if (!plantData.data || plantData.length === 0) {
-        throw new Error('No plant data found');
-    }
-    return plantData;
-};
-
-async function fetchPlantSearch(searchTerm, page) {
-
-    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${searchTerm}&page${page}`);
-
-    if (!plantAPIResponse.ok) {
-        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
-    }
-    const plantData = await plantAPIResponse.json();
-    if (!plantData.data || plantData.length === 0) {
-        throw new Error('No plant data found');
-    }
-    return plantData;
-};
-
-// show
+// Show list of plants
 router.get('/getplants', verifyToken, async (req, res) =>{
 
     try{
+        // Parse the page number from the query parameter, defaulting to page 1 if not provided
+        const page = req.query.page ? parseInt(req.query.page, 10) : 1; 
 
-        const page = req.query.page ? parseInt(req.query.page, 10) : 1; // Default to page 1 if not provided
+        // Fetch plant data based on the page number
         const plantData = await fetchPlantList(page);
+
+        // Send the fetched plant data as JSON response
         res.json(plantData);
 
     }catch (error) {
-        // Log error and throw it up the chain
         console.error("Error fetching data from API:", error);
         throw error;
       }
 });
 
-// Show
+// Function to fetch details of a specific plant using its scientific name
+async function fetchPlantDetails(sName) {
+
+    // Make an API request to fetch plant details based on the provided scientific name
+    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&filter[scientific_name]=${sName}`);
+
+    // Check if the API request was successful
+    if (!plantAPIResponse.ok) {
+        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
+    };
+
+    // Parse the JSON response
+    const plantData = await plantAPIResponse.json();
+
+    // Check if plant data exists and is not empty
+    if (!plantData.data || plantData.length === 0) {
+        throw new Error('No plant data found');
+    };
+
+    // Return the fetched plant data
+    return plantData;
+};
+
+// Show details of a specific plant by its scientific name
 router.get('/detail/:sName', verifyToken, async (req, res) =>{
 
     try{
+        // Fetch plant details based on the provided scientific name
         const plantDetails = await fetchPlantDetails(req.params.sName);
+
+        // Send the fetched plant details as JSON response
         res.json(plantDetails);
 
     }catch (error) {
@@ -80,13 +90,40 @@ router.get('/detail/:sName', verifyToken, async (req, res) =>{
       }
 });
 
-// Show
+// Function to fetch plant search results based on a search term and page number
+async function fetchPlantSearch(searchTerm, page) {
+
+    // Make an API request to search for plants based on the provided search term and page number
+    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${searchTerm}&page${page}`);
+
+    // Check if the API request was successful
+    if (!plantAPIResponse.ok) {
+        throw new Error(`API request failed: ${plantAPIResponse.statusText}`);
+    };
+
+    // Parse the JSON response
+    const plantData = await plantAPIResponse.json();
+
+    // Check if plant data exists and is not empty
+    if (!plantData.data || plantData.length === 0) {
+        throw new Error('No plant data found');
+    };
+
+    // Return the fetched plant data
+    return plantData;
+};
+
+// Show plants based on a search term
 router.get('/search/:searchTerm', verifyToken, async (req, res) =>{
 
     try{
-        const page = req.query.page ? parseInt(req.query.page, 10) : 1; // Default to page 1 if not provided
+        // Parse the page number from the query parameter, defaulting to page 1 if not provided
+        const page = req.query.page ? parseInt(req.query.page, 10) : 1;
 
+        // Fetch plant search results based on the search term and page number
         const plantSearch = await fetchPlantSearch(req.params.searchTerm, page);
+
+        // Send the fetched plant search results as JSON response
         res.json(plantSearch);
 
     }catch (error) {
@@ -96,27 +133,31 @@ router.get('/search/:searchTerm', verifyToken, async (req, res) =>{
       }
 });
 
-// Update
+// Update user's favorites
 router.get('/favorites/:sName', verifyToken, async (req, res) => {
 
     try{
-
+        // Find the user's profile based on their user ID
         const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
 
+        // If user profile not found, return 404 error
         if (!userProfile) {
             return res.status(404).json({ message: "User profile not found" });
         }
 
+        // Initialize favorite_plants array if not exists in user profile
         if (!userProfile.favorite_plants) {
             userProfile.favorite_plants = [];
         }
 
         // Check if the plant is already in the favorites
         if (!userProfile.favorite_plants.includes(req.params.sName)) {
+            // Add the plant to the favorites
             userProfile.favorite_plants.push(req.params.sName);
-            await userProfile.save();
+            await userProfile.save(); // Save the updated user profile
         }
 
+        // Send the updated user profile as response
         res.send(userProfile)
 
     }catch (error) {
@@ -126,15 +167,18 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
 
 });
 
-// Delete
+// Delete a plant from user's favorites
 router.delete('/favorites/:sName', verifyToken, async (req, res) => {
     try {
+        // Find the user's profile based on their user ID
         const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
 
+        // If user profile not found, return 404 error
         if (!userProfile) {
             return res.status(404).json({ message: "User profile not found" });
         }
 
+        // Initialize favorite_plants array if not exists in user profile
         if (!userProfile.favorite_plants) {
             userProfile.favorite_plants = [];
         }
@@ -144,8 +188,9 @@ router.delete('/favorites/:sName', verifyToken, async (req, res) => {
             (plant) => plant !== req.params.sName
         );
 
-        await userProfile.save();
+        await userProfile.save(); // Save the updated user profile
 
+        // Send the updated user profile as response
         res.json(userProfile);
 
     } catch (error) {

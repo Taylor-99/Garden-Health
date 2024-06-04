@@ -18,7 +18,7 @@ moodCtrl = require('./contollers/moodController');
 activityCtrl = require('./contollers/activityController');
 socialCtrl = require('./contollers/postController');
 
-const PORT = process.env.PORT||3000;
+const PORT = process.env.PORT||4000;
 
 const app = express();
 
@@ -34,7 +34,7 @@ liveReloadServer.server.once("connection", () => {
 // Indicates where our static files are located
 app.use(
     cors({
-      origin: ["http://localhost:5173"],
+      origin: ["http://localhost:3000/"],
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
       allowedHeaders: ['Content-Type', 'Authorization']

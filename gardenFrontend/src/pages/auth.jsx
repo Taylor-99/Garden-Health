@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/router';
 
 
 export default function Auth(props){
@@ -11,7 +11,7 @@ export default function Auth(props){
     })
     const [error, setError] = useState('');
 
-    const navigate = useNavigate()
+    const navigate = useRouter()
 
 
     const handleLogin = async (e) => {
@@ -30,7 +30,7 @@ export default function Auth(props){
                 Cookies.set('token', data.token);
                 // Redirect or perform an action on successful login
                 props.setUser(data.user)
-                navigate('/')
+                navigate.replace('/')
 
             } else {
                 setError(data.message);
@@ -58,7 +58,7 @@ export default function Auth(props){
                 console.log(data.token)
                 console.log(data)
                 props.setUser(data.createUser)
-                navigate('/createprofile')
+                navigate.replace('/createprofile')
             } else {
                 setError(data.message);
             }
