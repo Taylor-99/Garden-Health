@@ -7,19 +7,30 @@ const NavBar = () => {
 
     const navigate = useRouter();
 
-    const handleLogout = () => {
-        Cookies.remove('token');
-        navigate.replace('/login');
+    const handleLogout = async () => {
+        try {
+            const response = await fetch('http://localhost:4000/auth/logout', {
+                method: 'get',
+                credentials: "include",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                navigate.replace('/auth')
+
+            } else {
+                setError(data.message);
+            }
+        } catch (err) {
+            setError('Network error');
+        }
     };
 
     return (
         <nav>
             <ul>
-                <li>
-                    <Link href="/">
-                        Home
-                    </Link>
-                </li>
                 <li>
                     <Link href="/dashboard">
                         Dashboard

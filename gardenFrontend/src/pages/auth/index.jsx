@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useCookies } from 'react-cookie';
 import fetch from 'isomorphic-unfetch'
 // https://blog.logrocket.com/creating-website-next-js-react/
 
@@ -12,14 +13,15 @@ export default function Auth(){
         password: ''
     })
     const [error, setError] = useState('');
+    const [cookies, setCookie] = useCookies(['token']);
 
     const navigate = useRouter()
-
 
     const handleLogin = async (e) => {
         try {
             const response = await fetch('http://localhost:4000/auth/login', {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -29,7 +31,7 @@ export default function Auth(){
             const data = await response.json();
 
             if (response.ok) {
-                Cookies.set('token', data.token);
+                setCookie('token', data.token);
                 navigate.replace('/dashboard')
 
             } else {
@@ -44,6 +46,7 @@ export default function Auth(){
         try {
             const response = await fetch('http://localhost:4000/auth/signup', {
                 method: 'POST',
+                credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
                 },

@@ -3,7 +3,6 @@ import '../App.css'
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Cookies from 'js-cookie';
-import withAuth from './components/withAuth';
 
 const App = ({Component, pageProps}) => {
 
@@ -11,11 +10,14 @@ const App = ({Component, pageProps}) => {
 
   useEffect(() => {
       const token = Cookies.get('token');
-      if (!token && navigate.pathname !== '/auth') {
-          navigate.replace('/auth');
-      }
 
-      console.log(token)
+      console.log('Token:', token); // Debug logging
+      console.log('Pathname:', navigate.pathname); // Debug logging
+
+      if (!token && navigate.pathname !== '/auth') {
+        console.log('Redirecting to login page...'); // Debug logging
+        navigate.push('/auth');
+      }
   }, []);
 
   return (
@@ -25,4 +27,4 @@ const App = ({Component, pageProps}) => {
   )
 }
 
-export default withAuth(App);
+export default App;

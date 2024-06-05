@@ -31,9 +31,10 @@ router.post('/signup', async (req, res, next) => {
         const token = createToken(createUser._id)
         res.json({token, createUser})
 
-        res.cookie("token", token, {
+        res.cookie("access_token", token, {
             withCredentials: true,
             httpOnly: false,
+            origin: ["http://localhost:3000"],
         });
 
         res.status(201).json({ message: "User signed up successfully", success: true, createUser });
@@ -69,16 +70,34 @@ router.post('/login', async (req, res, next) => {
                     // make a token
                     const token = createToken(user._id)
 
-                    console.log(token)
+                    console.log("token from login route = ", token)
 
                     res.cookie("token", token, {
+                        httpOnly: true,
                         withCredentials: true,
-                        httpOnly: false,
+                        origin: ["http://localhost:3000"],
+                        secure: true,
+                        sameSite: "none",
+                        path: '/',
+                    })
+                    .cookie("checkToken", true, {
+                        httpOnly: true,
+                        withCredentials: true,
+                        origin: ["http://localhost:3000"],
+                        secure: true,
+                        sameSite: "none",
+                        path: '/',
+                      })
+
+                    console.log("cookie set succesfully");
+
+                    return res.status(200).json({
+                        status: 'success',
+                        data: user,
+                        token: token,
                     });
 
-                    res.status(201).json({ message: "User signed in successfully", success: true, user });
-
-                    next();
+                    // next();
                 }
             }
 
@@ -91,7 +110,7 @@ router.post('/login', async (req, res, next) => {
 });
 
 // Route for token verification
-router.post('/', async (req, res) => {
+router.get('/', async (req, res) => {
     const token = req.cookies.token
 
     if (!token) {
@@ -105,7 +124,7 @@ router.post('/', async (req, res) => {
       } else {
         const user = await db.User.findById(data.userID);
         if (user) {
-            return res.json({ status: true, user: user.username });
+            return res.json({ status: true, user: user.username, token });
         } else {
             return res.json({ status: false });
         }
@@ -114,11 +133,9 @@ router.post('/', async (req, res) => {
 })
 
 // Logout route to clear the authentication token
-router.get('/logout', verifyToken, (req, res) => {
-    return res
-    .clearCookie("token")
-    .status(200)
-    .json({ message: "Successfully logged out" });
+router.get('/logout', (req, res) => {
+    res.clearCookie("token");
+    res.json({ message: "Logged out" });
 });
 
 // Function to create JWT token

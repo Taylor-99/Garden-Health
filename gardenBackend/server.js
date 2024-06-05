@@ -7,7 +7,6 @@ const morgan = require('morgan')
 const cors = require("cors");
 require("dotenv").config();
 const cookieParser = require("cookie-parser");
-const activity = require('./models/activity');
 
 userCtrl = require('./contollers/userController');
 profileCtrl = require('./contollers/profileController');
@@ -32,12 +31,12 @@ liveReloadServer.server.once("connection", () => {
 });
 
 // Indicates where our static files are located
+app.use(cookieParser());
 app.use(
     cors({
       origin: ["http://localhost:3000"],
       methods: ["GET", "POST", "PUT", "DELETE"],
       credentials: true,
-      allowedHeaders: ['Content-Type', 'Authorization']
     })
   );
 app.use(express.static('public'));
@@ -50,8 +49,6 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 app.use(morgan('tiny')); // morgan is just a logger
-
-app.use(cookieParser());
 
 app.use('/auth', userCtrl);
 app.use('/profile', profileCtrl);
