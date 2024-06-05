@@ -12,24 +12,19 @@ const weather = () => {
 
             try {
                 console.log("fetching weather data")
-                const response = await fetch('http://localhost:4000/dash/getweather', { 
-                method: 'GET',
-                credentials: "include" 
-            });
+                const response = await fetch('http://localhost:4000/dash/getweather', {
+                    credentials: 'include'
+                });
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log("Data ", data)
-                setWeatherData(data);
-            } else {
-                console.error('Failed to fetch data');
-            }
+                const data = await response.json()
+                setWeatherData(data)
+                setLoading(false)
             } catch (error) {
                 console.error('Error:', error.message);
             }
-    }
+        }
 
-    fetchWeather();
+        fetchWeather();
 
     }, []);
 
