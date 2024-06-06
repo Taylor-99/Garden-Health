@@ -51,12 +51,10 @@ router.get('/getweather', verifyToken, async (req, res) =>{
     try{
 
         // Fetch user profile from the database using the user ID from the verified token
-        const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
-        console.log(userProfile)
+        const userProfile = await db.UserProfile.findOne({ user: req.user._id });
 
         // Get the user's city from their profile
         let userCity = userProfile.city;
-        console.log(userCity)
 
         // Fetch location data (latitude and longitude) for the user's city
         const locationData = await fetchLocationData(userCity);
@@ -64,7 +62,6 @@ router.get('/getweather', verifyToken, async (req, res) =>{
 
         // Fetch weather data using the fetched latitude and longitude
         const weatherData = await fetchWeatherData(lat, lon);
-        console.log(weatherData)
 
         // Send the weather data as the response
         res.json(weatherData);
@@ -152,7 +149,7 @@ router.get('/challenge', verifyToken, async (req, res) =>{
 
     try {
         // Get or create a challenge for the user
-        const challenge = await getOrCreateChallenge(req.user.userID);
+        const challenge = await getOrCreateChallenge(req.user._id);
         res.json(challenge);
     } catch (error) {
         console.error(error.message);
@@ -231,7 +228,8 @@ router.get('/reminders', verifyToken, async (req, res) =>{
 
     try {
         // Retrieve and send reminders for the authenticated user
-        const reminders = await checkForReminders(req.user.userID)
+        const reminders = await checkForReminders(req.user._id)
+        console.log(reminders)
         res.json(reminders)
         
     } catch (error) {

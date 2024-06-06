@@ -18,13 +18,14 @@ const NavBar = () => {
             });
 
             if (response.ok) {
+                removeCookie("token");
                 navigate.replace('/auth')
 
             } else {
-                setError(data.message);
+                console.log(data.message);
             }
         } catch (err) {
-            setError('Network error');
+            console.log('Network error');
         }
     };
 

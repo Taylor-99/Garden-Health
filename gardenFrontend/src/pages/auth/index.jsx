@@ -17,11 +17,11 @@ export default function Auth(){
 
     const navigate = useRouter()
 
-    const handleLogin = async (e) => {
+    const handleLogin = async () => {
         try {
             const response = await fetch('http://localhost:4000/auth/login', {
                 method: 'POST',
-                credentials: "include",
+                withCredentials: true,
                 headers: {
                     'Content-Type': 'application/json',
                 },

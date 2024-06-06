@@ -11,9 +11,6 @@ const App = ({Component, pageProps}) => {
   useEffect(() => {
       const token = Cookies.get('token');
 
-      console.log('Token:', token); // Debug logging
-      console.log('Pathname:', navigate.pathname); // Debug logging
-
       if (!token && navigate.pathname !== '/auth') {
         console.log('Redirecting to login page...'); // Debug logging
         navigate.push('/auth');

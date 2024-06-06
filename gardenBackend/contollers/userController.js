@@ -34,8 +34,11 @@ router.post('/signup', async (req, res, next) => {
         res.cookie("access_token", token, {
             withCredentials: true,
             httpOnly: false,
-            origin: ["http://localhost:3000"],
-        });
+        })
+        .cookie("checkToken", true, {
+            httpOnly: true,
+            withCredentials: true,
+          });
 
         res.status(201).json({ message: "User signed up successfully", success: true, createUser });
 
@@ -75,29 +78,17 @@ router.post('/login', async (req, res, next) => {
                     res.cookie("token", token, {
                         httpOnly: true,
                         withCredentials: true,
-                        origin: ["http://localhost:3000"],
-                        secure: true,
-                        sameSite: "none",
-                        path: '/',
                     })
                     .cookie("checkToken", true, {
                         httpOnly: true,
                         withCredentials: true,
-                        origin: ["http://localhost:3000"],
-                        secure: true,
-                        sameSite: "none",
-                        path: '/',
-                      })
+                      });
 
-                    console.log("cookie set succesfully");
+                    res
+                    .status(201)
+                    .json({ message: "User signed in successfully", success: true, token });
 
-                    return res.status(200).json({
-                        status: 'success',
-                        data: user,
-                        token: token,
-                    });
-
-                    // next();
+                    next();
                 }
             }
 
@@ -114,22 +105,19 @@ router.get('/', async (req, res) => {
     const token = req.cookies.token
 
     if (!token) {
-      return res.json({ status: false })
+        return res.json({ status: false })
     }
 
-    // Verify the provided token
-    jwt.verify(token, process.env.SECRET, async (err, data) => {
-      if (err) {
-        return res.json({ status: false });
-      } else {
-        const user = await db.User.findById(data.userID);
-        if (user) {
-            return res.json({ status: true, user: user.username, token });
+    jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
+        if (err) {
+            return res.json({ status: false })
         } else {
-            return res.json({ status: false });
+            const user = await db.User.findById(data.id)
+
+            if (user) return res.json({ status: true, user: user.username })
+            else return res.json({ status: false })
         }
-      }
-    })
+  })
 })
 
 // Logout route to clear the authentication token
