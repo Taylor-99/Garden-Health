@@ -8,7 +8,7 @@ const db  = require('../models');
 const verifyToken = require('../middleware/VerifyJWT');
 
 // Delete route for deleting a plant by its ID
-router.delete('/:plantId', async (req, res) =>{
+router.delete('/:plantId', verifyToken, async (req, res) =>{
     try{
         // Find and delete the plant from the database using its ID
         await db.Plant.findByIdAndDelete( req.params.plantId );
@@ -96,7 +96,7 @@ router.post('/create', verifyToken, async (req, res) =>{
 
     try {
         // Find the authenticated user
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
 
         // Check if the user exists
         if (!user) {
@@ -104,7 +104,7 @@ router.post('/create', verifyToken, async (req, res) =>{
         }
 
         // Create a new plant and get its ID
-        const plantId = await createNewPlant(req.user.userID, req.body);
+        const plantId = await createNewPlant(req.user._id, req.body);
 
         // Create a new plant update for the created plant
         await createNewPlantUpdate(plantId, req.body);
@@ -141,7 +141,7 @@ router.get('/', verifyToken, async (req, res) =>{
 
     try {
         // Find all plants belonging to the authenticated user
-        const userPlants = await db.Plant.find({ user: req.user.userID});
+        const userPlants = await db.Plant.find({ user: req.user._id});
 
         // Initialize an empty array to store plant details with their latest updates
         let updateList = [];

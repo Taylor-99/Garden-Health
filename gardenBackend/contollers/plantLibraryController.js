@@ -32,7 +32,7 @@ async function fetchPlantList(pageNum) {
 };
 
 // Show list of plants
-router.get('/getplants', verifyToken, async (req, res) =>{
+router.get('/getplants/', verifyToken, async (req, res) =>{
 
     try{
         // Parse the page number from the query parameter, defaulting to page 1 if not provided
@@ -138,7 +138,7 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
 
     try{
         // Find the user's profile based on their user ID
-        const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
+        const userProfile = await db.UserProfile.findOne({ user: req.user._id });
 
         // If user profile not found, return 404 error
         if (!userProfile) {
@@ -171,7 +171,7 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
 router.delete('/favorites/:sName', verifyToken, async (req, res) => {
     try {
         // Find the user's profile based on their user ID
-        const userProfile = await db.UserProfile.findOne({ user: req.user.userID });
+        const userProfile = await db.UserProfile.findOne({ user: req.user._id });
 
         // If user profile not found, return 404 error
         if (!userProfile) {

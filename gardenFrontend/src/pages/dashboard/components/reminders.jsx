@@ -57,7 +57,7 @@ const reminders = () => {
 
     if (isLoading) return <p>Loading...</p>
     if (!reminders || reminders.length === 0) return <p>No Reminders</p>;
-    console.log(reminders)
+    // console.log(reminders)
 
   return (
     <div className="bg-white rounded-lg shadow-md p-6 mb-4">
