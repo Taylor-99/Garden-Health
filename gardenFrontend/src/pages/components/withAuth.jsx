@@ -1,7 +1,6 @@
 
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import Cookies from 'js-cookie';
 import { useCookies } from 'react-cookie'
 
 const withAuth = (WrappedComponent) => {
@@ -21,13 +20,6 @@ const withAuth = (WrappedComponent) => {
                     // Debug logging
                     navigate.push('/auth');
                 }
-                const response = await fetch('http://localhost:4000/auth', {
-                    method: 'get',
-                    credentials: "include",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                });
             };
 
             verifyCookie();

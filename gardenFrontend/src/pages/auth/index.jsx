@@ -13,7 +13,7 @@ export default function Auth(){
         password: ''
     })
     const [error, setError] = useState('');
-    const [cookies, setCookie] = useCookies(['token']);
+    const [cookies, setCookie] = useCookies(['token', 'user']);
 
     const navigate = useRouter()
 
@@ -32,6 +32,7 @@ export default function Auth(){
 
             if (response.ok) {
                 setCookie('token', data.token);
+                setCookie('user', data.username);
                 navigate.replace('/dashboard')
 
             } else {

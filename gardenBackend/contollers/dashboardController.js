@@ -137,7 +137,7 @@ async function getOrCreateChallenge(userId) {
                 return(newChallenge);
             }else{
                 // If no new challenge is needed or it's the same day, return a message
-                return {message: "already completed the challenge for today"}
+                return(userChallenges[userChallenges.length - 1])
             }
         }
     }
@@ -154,6 +154,28 @@ router.get('/challenge', verifyToken, async (req, res) =>{
     } catch (error) {
         console.error(error.message);
         res.status(400).send(error.message);
+    }
+});
+
+//Update challenge
+router.put('/challenge/update/:challengeId', verifyToken, async (req, res) => {
+    try{
+        // find the challenge using its ID
+        let updateChallenge = await db.Challenges.findById(req.params.challengeId);
+
+        if (!updateChallenge) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+
+        updateChallenge.completed = true;
+        await updateChallenge.save()
+
+        // Send a success response
+        res.status(200).json({ message: 'Challenge updated successfully', challenge: updateChallenge });
+
+    } catch (error) {
+        console.error("Error updating challenge: ", error.message);
+        res.status(400).json({ message: error.message });
     }
 });
 
@@ -229,13 +251,35 @@ router.get('/reminders', verifyToken, async (req, res) =>{
     try {
         // Retrieve and send reminders for the authenticated user
         const reminders = await checkForReminders(req.user._id)
-        console.log(reminders)
         res.json(reminders)
         
     } catch (error) {
         console.error(error.message);
         res.status(400).send(error.message);
     }
+});
+
+//Update reminder
+router.put('/reminders/update/:reminderId', verifyToken, async (req, res) => {
+    try{
+        // find the challenge using its ID
+        let updateReminder = await db.Reminder.findById(req.params.reminderId);
+
+        if (!updateReminder) {
+            return res.status(404).json({ message: 'Challenge not found' });
+        }
+
+        updateReminder.completed = true;
+        await updateReminder.save()
+
+        // Send a success response
+        res.status(200).json({ message: 'Challenge updated successfully', reminder: updateReminder });
+
+    } catch (error) {
+        console.error("Error updating reminders: ", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
 });
 
 module.exports = router

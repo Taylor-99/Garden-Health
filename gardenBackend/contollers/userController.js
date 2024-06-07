@@ -29,7 +29,7 @@ router.post('/signup', async (req, res, next) => {
 
         // Create a token for the new user
         const token = createToken(createUser._id)
-        res.json({token, createUser})
+        let username = createUser.username
 
         res.cookie("access_token", token, {
             withCredentials: true,
@@ -40,7 +40,7 @@ router.post('/signup', async (req, res, next) => {
             withCredentials: true,
           });
 
-        res.status(201).json({ message: "User signed up successfully", success: true, createUser });
+        res.status(201).json({ message: "User signed up successfully", success: true, token, username });
 
         next();
 
@@ -72,6 +72,7 @@ router.post('/login', async (req, res, next) => {
                 }else {
                     // make a token
                     const token = createToken(user._id)
+                    let username = user.username
 
                     console.log("token from login route = ", token)
 
@@ -86,7 +87,7 @@ router.post('/login', async (req, res, next) => {
 
                     res
                     .status(201)
-                    .json({ message: "User signed in successfully", success: true, token });
+                    .json({ message: "User signed in successfully", success: true, token, username });
 
                     next();
                 }

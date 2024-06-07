@@ -13,7 +13,6 @@ const weather = () => {
         const fetchWeather = async () => {
 
             try {
-                console.log("fetching weather data")
                 const response = await fetch('http://localhost:4000/dash/getweather', {
                     credentials: 'include',
                     headers: {
@@ -35,7 +34,6 @@ const weather = () => {
 
     if (isLoading) return <p>Loading...</p>
     if (!weatherData) return <p>No weather data</p>
-    console.log(weatherData)
 
     //convert from Kelvin to Fahrenheit
     let fahrenheit = ((weatherData.main.temp) - 273.15) * 1.8 + 32
@@ -44,18 +42,19 @@ const weather = () => {
 
     return (
         <div className="flex justify-center">
-            <div className="bg-gray-200 p-4 rounded-lg shadow-md flex items-center justify-between max-w-xs">
-                <div className="card">
+            <div className="bg-gray-200 p-4 rounded-lg shadow-md flex items-center justify-between max-w-xs w-80">
+                <div className="">
+                    <p className="text-center">{weatherData.weather[0].main}</p>
                     <img
                         src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
-                        className="w-12 h-12"
-                        alt="Weather Icon"
+                        className="w-20 h-20 text-center"
+                        alt={weatherData.weather[0].description}
                     />
-                    <p>{weatherData.weather[0].description}</p>
                 </div>
-                <div className="text-center">
-                    <p className="text-sm text-gray-600">{weatherData.name}</p>
-                    <p className="text-2xl font-bold" >{fahrenheit}°</p>
+                <div className="absolute top-50 left-1/2 bg-gray-400 w-1 h-32"></div>
+                <div className="text-center p-5">
+                    <p className="text-sm text-gray-600 text-center">{weatherData.name}</p>
+                    <p className="text-2xl font-bold text-center" >{fahrenheit}°</p>
                 </div>
             </div>
         </div>

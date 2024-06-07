@@ -1,21 +1,8 @@
 
 import '../App.css'
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie';
+import withAuth from './components/withAuth'
 
 const App = ({Component, pageProps}) => {
-
-  const navigate = useRouter();
-
-  useEffect(() => {
-      const token = Cookies.get('token');
-
-      if (!token && navigate.pathname !== '/auth') {
-        console.log('Redirecting to login page...'); // Debug logging
-        navigate.push('/auth');
-      }
-  }, []);
 
   return (
     <div>
@@ -24,4 +11,4 @@ const App = ({Component, pageProps}) => {
   )
 }
 
-export default App;
+export default withAuth(App);

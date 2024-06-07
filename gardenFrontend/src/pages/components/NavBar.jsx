@@ -1,11 +1,23 @@
 
 import Link from 'next/link';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { useState } from 'react';
+import { useCookies } from 'react-cookie'
+import withAuth from './withAuth'
 
-const NavBar = () => {
+const NavBar = (props) => {
 
     const navigate = useRouter();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [cookies] = useCookies(['user']);
+    
+    if(!cookies.user){
+        return ""
+    }
+
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
     const handleLogout = async () => {
         try {
@@ -29,20 +41,61 @@ const NavBar = () => {
         }
     };
 
+    const closeDropdown = () => {
+        setIsDropdownOpen(false);
+    };
+
     return (
-        <nav>
-            <ul>
-                <li>
-                    <Link href="/dashboard">
-                        Dashboard
-                    </Link>
-                </li>
-                <li>
-                    <button onClick={handleLogout}>Logout</button>
-                </li>
-            </ul>
+        <nav className="flex justify-between items-center px-4 bg-gray-800 py-2">
+
+            <h1 className="text-white font-semibold text-xl" >{props.pageName}</h1>
+
+            <div className=" flex items-center " >
+                <h1 className="text-white text-base mr-4">Welcome {cookies.user}</h1>
+
+                <div className="relative" >
+
+                    <button onClick={toggleDropdown} className="text-white font-semibold px-4">
+                    <span className="ml-1 text-2xl">&#9776;</span> {/* Hamburger icon */}
+                    </button>
+
+                    {isDropdownOpen && (
+
+                            <ul className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md" >
+                                <li>
+                                    <Link 
+                                        href="/dashboard"
+                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                        onClick={closeDropdown}
+                                    >
+                                        Dashboard
+                                    </Link>
+                                </li>
+                                <li>
+                                    <Link 
+                                        href="/plantjournal" 
+                                        className="block px-4 py-2 text-gray-800 hover:bg-gray-200" 
+                                        onClick={closeDropdown}
+                                    >
+                                        Plant Journal
+                                    </Link>
+                                </li>
+                                <li>
+                                    < input 
+                                        type="button"
+                                        onClick={() => {
+                                            handleLogout(); closeDropdown(); 
+                                        }}
+                                        className="w-full text-left px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                        value = "Logout"
+                                    />
+                                </li>
+                            </ul>
+                    )}
+                </div>
+            </div>
         </nav>
     );
 };
 
-export default NavBar;
+export default withAuth(NavBar);

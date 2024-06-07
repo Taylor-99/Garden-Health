@@ -19,7 +19,6 @@ const verifyToken = async (req, res, next) => {
 
             const decoded = jwt.verify(extractedToken, process.env.SECRET);
             const user = await db.User.findById(decoded.userID);
-            console.log(user)
     
             if (!user) {
                 return res.status(401).json({ message: 'Invalid Token' });

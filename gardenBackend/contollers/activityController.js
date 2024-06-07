@@ -50,7 +50,7 @@ router.put('/:activityId', async (req, res) => {
 
     try{
         // Update the activity using its ID and the data from the request body
-        await db.Mood.findByIdAndUpdate(
+        await db.Activity.findByIdAndUpdate(
             req.params.activityId, 
             req.body,
         );

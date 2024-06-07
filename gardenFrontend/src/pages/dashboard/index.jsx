@@ -1,16 +1,15 @@
 
-import NavBar from '../components/NavBar.jsx';
 import withAuth from '../components/withAuth.jsx';
+import NavBar from '../components/NavBar.jsx'
 import WeatherComponent from './components/weather.jsx'
 import ChallengeComponent from './components/challenges.jsx'
 import RemindersComponent from './components/reminders.jsx'
 
-const Home = () => {
-
+const Dashboard = () => {
 
   return (
     <div>
-      <NavBar />
+      <NavBar pageName="Dashboard" />
       <h1>This is the Dashboard</h1>
       <br></br>
       <WeatherComponent />
@@ -22,4 +21,4 @@ const Home = () => {
   )
 }
 
-export default withAuth(Home);
+export default withAuth(Dashboard);
