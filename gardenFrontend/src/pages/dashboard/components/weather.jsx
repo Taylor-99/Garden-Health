@@ -30,7 +30,7 @@ const weather = () => {
 
         fetchWeather();
 
-    }, []);
+    }, [weatherData, isLoading]);
 
     if (isLoading) return <p>Loading...</p>
     if (!weatherData) return <p>No weather data</p>

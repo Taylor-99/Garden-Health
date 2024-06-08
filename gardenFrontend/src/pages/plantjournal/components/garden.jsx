@@ -36,22 +36,26 @@ const Garden = () => {
     if (isLoading) return <p>Loading...</p>
     if (!gardenData) return <p>No plants to show</p>
 
-    console.log(gardenData)
+    console.log(gardenData[0][1])
 
     return (
         <div>
-            <h1> Your Garden </h1>
-                <ul>
+            <h1 className="text-2xl font-bold mb-4 text-center"> Your Garden </h1>
+                <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
                     {gardenData && gardenData.map((plant, index) => {
                         return (
-                            <li>
-                                Plant
+                            <li key={index} className="bg-white p-4 rounded-lg shadow-md w-48" >
+                                <img src={plant[1].plantImage} alt={plant[0].plantName} className="w-full h-32 object-cover rounded-md mb-2" ></img>
+                                <h2 className="text-lg font-semibold">{plant[0].plantName}</h2>
+                                <p className="text-gray-600" >Last update: {plant[0].updatedAt}</p>
+
+                                <br></br>
                             </li>
                         );
                     })}
-                    <li>
-                        <Link>
-                            href="/plantjournal/createplant"
+                    <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center" >
+                        <Link href="/plantjournal/createplant" className="text-blue-500 hover:text-blue-700 font-semibold">
+                            Create A plant
                         </Link>
                     </li>
 

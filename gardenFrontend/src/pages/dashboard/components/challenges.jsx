@@ -74,6 +74,7 @@ const challenges = () => {
                 className={`${ isCompleted ? 'bg-green-500 cursor-not-allowed' : 'bg-red-500 hover:bg-red-600 ' } text-white font-semibold py-2 px-4 rounded mt-4 transition duration-300` } 
             />
         </div>
+        <p>{isCompleted ? 'Come back tomorrow for a new challenge' : ''}</p>
     </div>
   )
 }

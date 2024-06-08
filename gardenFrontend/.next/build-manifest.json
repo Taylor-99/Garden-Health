@@ -27,10 +27,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/plantjournal.js"
     ],
-    "/plantjournal/library": [
+    "/plantjournal/createplant": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/library.js"
+      "static/chunks/pages/plantjournal/createplant.js"
     ]
   },
   "ampFirstPages": []

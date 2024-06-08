@@ -55,6 +55,13 @@ router.get('/water/:plantID', verifyToken, async (req, res) =>{
 
 // Function to create a new plant
 async function createNewPlant(userId, plantData) {
+
+    if(plantData.watered.toLowerCase() === 'yes'){
+        plantData.watered = true
+    } else{
+        plantData.watered = false
+    }
+
     // Define the properties of the new plant
     const newPlant = {
         plantName: plantData.plantName,
@@ -74,6 +81,12 @@ async function createNewPlant(userId, plantData) {
 
 // Function to create a new plant update
 async function createNewPlantUpdate(plantId, updateData) {
+
+    if(updateData.rain.toLowerCase() === 'yes'){
+        updateData.rain = true
+    } else{
+        updateData.rain = false
+    }
 
     // Define the properties of the new plant update
     const newPlantUpdate = {

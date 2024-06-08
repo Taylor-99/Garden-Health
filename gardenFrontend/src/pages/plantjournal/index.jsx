@@ -13,8 +13,11 @@ const PlantJournal = () => {
     return (
         <div>
             <NavBar pageName="Plant Journal" />
+
             <h1> This is the Plant Journal </h1>
+
             <PlantNavBar />
+            
             <Garden />
         </div>
 

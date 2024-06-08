@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
-import fetch from 'isomorphic-unfetch'
+// import fetch from 'isomorphic-unfetch'
+
 // https://blog.logrocket.com/creating-website-next-js-react/
 
 
@@ -11,7 +12,7 @@ export default function Auth(){
     const [formData, setFormData] = useState({
         username: '',
         password: ''
-    })
+    });
     const [error, setError] = useState('');
     const [cookies, setCookie] = useCookies(['token', 'user']);
 
@@ -53,7 +54,7 @@ export default function Auth(){
                 },
                 body: JSON.stringify(formData),
             });
-
+            console.log('sent data')
             const data = await response.json();
 
             if (response.ok) {
