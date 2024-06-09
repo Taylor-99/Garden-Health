@@ -98,6 +98,8 @@ const Search = () => {
             <PlantNavBar />
             <br></br>
 
+            <Link href='plantjournal/library'> Go Back</Link>
+
             <div className="flex justify-center space-x-4" >
                 <input 
                     type='search' 

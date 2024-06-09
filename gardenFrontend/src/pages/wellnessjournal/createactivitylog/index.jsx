@@ -64,6 +64,8 @@ const CreateActivityLog = () => {
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
 
+                <Link href='/wellnessjournal/activity'> Go Back </Link>
+
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     setError('');

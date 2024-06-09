@@ -51,6 +51,8 @@ const PlantLibraryDetails = () => {
         <PlantNavBar />
         <br></br>
 
+        <Link href='plantjournal/library'> Go Back </Link>
+
         <h1 className="text-2xl font-bold mb-4 text-center">{plant.common_name} Details</h1>
 
         <div className="flex flex-col items-center">

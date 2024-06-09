@@ -3,7 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/wellnessjournal/mood": "pages/wellnessjournal/mood.js",
-  "/wellnessjournal/createactivitylog": "pages/wellnessjournal/createactivitylog.js",
   "/wellnessjournal/activity": "pages/wellnessjournal/activity.js",
-  "/plantjournal/garden": "pages/plantjournal/garden.js"
+  "/wellnessjournal/createactivitylog": "pages/wellnessjournal/createactivitylog.js"
 }

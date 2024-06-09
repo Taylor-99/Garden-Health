@@ -68,6 +68,7 @@ const UpdatePlant = () => {
         <NavBar pageName="Plant Journal" />
 
         <section>
+        <Link href={`/plantjournal/details/${plantId}`}> Go Back</Link>
                     <h2> Update Plant </h2>
 
                     {error && <p style={{ color: 'red' }}>{error}</p>}

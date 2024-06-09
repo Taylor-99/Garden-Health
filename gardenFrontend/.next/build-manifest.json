@@ -27,11 +27,6 @@
       "static/chunks/main.js",
       "static/chunks/pages/wellnessjournal/activity.js"
     ],
-    "/wellnessjournal/createactivitylog": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/createactivitylog.js"
-    ],
     "/wellnessjournal/mood": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",

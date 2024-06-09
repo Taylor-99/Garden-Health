@@ -65,6 +65,8 @@ const CreateMoodLog = () => {
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
 
+            <Link href='wellnessjournal/mood'> Go back </Link>
+
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setError('');

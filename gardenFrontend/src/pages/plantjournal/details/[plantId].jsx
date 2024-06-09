@@ -88,6 +88,8 @@ const PlantDetails = () => {
             <PlantNavBar />
             <br></br>
             
+            <Link href='plantjournal/garden'> Go Back </Link>
+
             <div>
                 <div className="bg-white shadow-md rounded-lg overflow-hidden h-64 flex">
 

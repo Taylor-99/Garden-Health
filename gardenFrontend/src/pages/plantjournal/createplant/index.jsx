@@ -65,6 +65,9 @@ const CreatePlant = () => {
         <NavBar pageName="Plant Journal" />
 
         <section>
+
+            <Link href='plantjournal/garden'></Link>
+
             <h2>Add a New Plant</h2>
 
             {error && <p style={{ color: 'red' }}>{error}</p>}
