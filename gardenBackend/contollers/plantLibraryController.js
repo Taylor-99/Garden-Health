@@ -54,10 +54,8 @@ router.get('/getfavorites', verifyToken, async (req, res) =>{
     try{
         const findUserProfile = await db.UserProfile.find({ user: req.user._id})
 
-        console.log("profile =", findUserProfile)
+        const userFavorites = findUserProfile[0].favorite_plants
 
-        let userFavorites = findUserProfile.favorite_plants
-        console.log("user favs =", userFavorites)
         // Send the fetched plant data as JSON response
         res.json(userFavorites);
 
@@ -69,6 +67,8 @@ router.get('/getfavorites', verifyToken, async (req, res) =>{
 
 // Function to fetch details of a specific plant using its scientific name
 async function fetchPlantDetails(sName) {
+
+    const encodedsName = sName.split(' ').join('%20');
 
     // Make an API request to fetch plant details based on the provided scientific name
     const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants?token=${process.env.Plant_API}&filter[scientific_name]=${sName}`);
@@ -91,9 +91,10 @@ async function fetchPlantDetails(sName) {
 };
 
 // Show details of a specific plant by its scientific name
-router.get('/detail/:sName', verifyToken, async (req, res) =>{
+router.get('/details/:sName', verifyToken, async (req, res) =>{
 
     try{
+
         // Fetch plant details based on the provided scientific name
         const plantDetails = await fetchPlantDetails(req.params.sName);
 
@@ -111,8 +112,6 @@ router.get('/detail/:sName', verifyToken, async (req, res) =>{
 async function fetchPlantSearch(searchTerm) {
 
     const encodedSearchTerm = searchTerm.split(' ').join('%20');
-
-    console.log(encodedSearchTerm)
 
     // Make an API request to search for plants based on the provided search term and page number
     const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${encodedSearchTerm}`);

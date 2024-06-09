@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/plantjournal/search/[searchTerm]": "pages/plantjournal/search/[searchTerm].js",
-  "/plantjournal/library": "pages/plantjournal/library.js"
+  "/wellnessjournal/mood": "pages/wellnessjournal/mood.js",
+  "/plantjournal/createplant": "pages/plantjournal/createplant.js",
+  "/plantjournal/details/[plantId]": "pages/plantjournal/details/[plantId].js"
 }

@@ -31,10 +31,27 @@ const Search = () => {
             });
 
             const data = await response.json()
-            setUserFavorites(data[0])
-            setSearchedData(data[1]?.data)
+            setSearchedData(data?.data)
             setLoading(false)
 
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    };
+
+    const fetchFavorites = async () => {
+
+        try {
+            const response = await fetch(`http://localhost:4000/plantlibrary/getfavorites`, {
+                credentials: 'include',
+                headers: {
+                    Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
+                }
+            });
+
+            const data = await response.json()
+            setUserFavorites(data)
+            setLoading(false)
         } catch (error) {
             console.error('Error:', error.message);
         }
@@ -45,17 +62,18 @@ const Search = () => {
         if (searchTerm) {
             setLoading(true); // Set loading state before fetching new data
             fetchSearchData();
+            fetchFavorites()
         }
 
     }, [searchTerm]);
 
-    const toggleFavorite = async (speciesName) => {
+    const toggleFavorite = async (scientificName) => {
 
         try {
-            const isFavorite = userFavorites?.includes(speciesName);
+            const isFavorite = userFavorites?.includes(scientificName);
             const method = isFavorite ? 'DELETE' : 'PUT';
 
-            const response = await fetch(`http://localhost:4000/plantlibrary/favorites/${speciesName}`, {
+            const response = await fetch(`http://localhost:4000/plantlibrary/favorites/${scientificName}`, {
                 method: method,
                 credentials: 'include',
                 headers: {
@@ -76,22 +94,26 @@ const Search = () => {
     <div>
         <div>
             <NavBar pageName="Plant Journal" />
-
-            <h1> This is the Plant Journal </h1>
-            
+            <br></br>
             <PlantNavBar />
+            <br></br>
 
-            <div>
+            <div className="flex justify-center space-x-4" >
                 <input 
                     type='search' 
                     value={searchQuery} 
-                    onChange={(e) => setSearchQuery(e.target.value)} />
+                    onChange={(e) => setSearchQuery(e.target.value)} 
+                    className="border border-gray-300 rounded-md py-2 px-4 focus:outline-none focus:ring focus:border-blue-500"
+                    />
                 <input 
                     type='submit' 
                     value='Search' 
-                    onClick={() => router.push(`/plantjournal/search/${searchQuery}`)} 
+                    onClick={() => router.push(`/plantjournal/search/${searchQuery}`)}
+                    className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-md"
                     />
             </div>
+            
+            <br></br>
 
             <h1 className="text-2xl font-bold mb-4 text-center"> Searching for {searchTerm} </h1>
                 <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
@@ -99,14 +121,16 @@ const Search = () => {
                         const isFavorite = userFavorites?.includes(item.scientific_name)
                         return ( 
                             <li key={index} className="bg-white p-4 rounded-lg shadow-md w-48" >
-                                {/* <Link href={`/plantjournal/details`}> */}
+                                <Link href={`/plantjournal/plantlibrarydetails/${item.scientific_name}`}>
                                     <img src={item.image_url} alt={item.common_name} className="w-full h-32 object-cover rounded-md mb-2" ></img>
                                     <h2 className="text-lg font-semibold">{item.common_name}</h2>
                                     <input 
                                         type='button' 
-                                        value={isFavorite ? 'Remove from Favorites' : 'Add to Favorites'} 
-                                        onClick={() => toggleFavorite(item.scientific_name)} />
-                                {/* </Link> */}
+                                        value={isFavorite ? 'Remove Favorite' : 'Add Favorite'} 
+                                        onClick={() => toggleFavorite(item.scientific_name)} 
+                                        className={`px-4 py-2 rounded ${isFavorite ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                                    />
+                                </Link>
 
                                 <br></br>
                             </li>

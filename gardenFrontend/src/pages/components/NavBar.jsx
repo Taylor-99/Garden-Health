@@ -49,7 +49,7 @@ const NavBar = (props) => {
     return (
 
         <div>
-            <nav className="flex justify-between items-center px-4 bg-gray-800 py-2">
+            <nav className="flex justify-between items-center px-4 bg-gray-800 py-2 w-full">
 
                 <h1 className="text-white font-semibold text-xl" >{props.pageName}</h1>
 
@@ -77,11 +77,20 @@ const NavBar = (props) => {
                                     </li>
                                     <li>
                                         <Link 
-                                            href="/plantjournal" 
+                                            href="/plantjournal/garden" 
                                             className="block px-4 py-2 text-gray-800 hover:bg-gray-200" 
                                             onClick={closeDropdown}
                                         >
                                             Plant Journal
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link 
+                                            href="/wellnessjournal/mood" 
+                                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200" 
+                                            onClick={closeDropdown}
+                                        >
+                                            Wellness Journal
                                         </Link>
                                     </li>
                                     <li>

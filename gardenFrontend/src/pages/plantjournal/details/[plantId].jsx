@@ -5,6 +5,7 @@ import NavBar from '../../components/NavBar';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
+import PlantNavBar from '../components/PlantNavBar'
 
 
 const PlantDetails = () => {
@@ -83,31 +84,42 @@ const PlantDetails = () => {
     return (
         <div>
             <NavBar pageName="Plant Journal" />
+            <br></br>
+            <PlantNavBar />
+            <br></br>
+            
             <div>
-                <div>
-                    <img src={plant[1][plant[1].length-1].plantImage}></img>
-                </div>
-                <div>
-                    <h2>{plant[0].plantName}</h2>
-                    <h3>{plant[0].plantSpecies}</h3>
-                    <p>Date planted: {setDate(plant[0].plantDate)}</p>
-                    <p>Last update: {setDate(plant[1][plant[1].length-1].updatedAt)}</p>
-                    <p>Notes: {plant[1][plant[1].length-1].notes}</p>
-                    <br></br>
-                    <input 
-                        type="button" 
-                        value="Water Plant"
-                        onClick={() => wasWatered()}
-                        disabled={plant[0].watered}
-                    />
+                <div className="bg-white shadow-md rounded-lg overflow-hidden h-64 flex">
+
+                    <div>
+                        <img src={plant[1][plant[1].length-1].plantImage} className="w-48 h-48 p-2 md:w-auto" alt="Plant" />
+                    </div>
+                    <div className="ml-4">
+                        <h2 className="text-xl font-semibold">{plant[0].plantName}</h2>
+                        <h3 className="text-lg font-semibold">{plant[0].plantSpecies}</h3>
+                        <p className="mb-2"><span className="font-semibold">Date planted: </span> {setDate(plant[0].plantDate)}</p>
+                        <p className="mb-2"><span className="font-semibold">Last update: </span>{setDate(plant[1][plant[1].length-1].updatedAt)}</p>
+                        <p className="mb-2"><span className="font-semibold">Notes: </span> {plant[1][plant[1].length-1].notes}</p>
+                        <br></br>
+                        <input 
+                            type="button" 
+                            value="Water Plant"
+                            onClick={() => wasWatered()}
+                            disabled={plant[0].watered}
+                            className="bg-blue-500 text-white px-4 py-2 rounded"
+                        />
+                    </div>
                 </div>
 
-                <h2>Updates</h2>
+                <br></br>
+                <h2 className="text-2xl font-bold mb-4" >Updates</h2>
+                <br></br>
+
                 <div>
                     <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                         {plant[1] && plant[1].map((update, index) => {
                             return (
-                                <li key={index} className="bg-white p-4 rounded-lg shadow-md w-48" >
+                                <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
                                     <img src={update.plantImage} alt={plant[0].plantName} className="w-full h-32 object-cover rounded-md mb-2" ></img>
                                     <h2 className="text-lg font-semibold">Update from: { setDate(update.updatedAt)}</h2>
                                     <p>Health: {update.health}</p>
@@ -122,7 +134,7 @@ const PlantDetails = () => {
                                 </li>
                             );
                         })}
-                        <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center" >
+                        <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
                             <Link href={`/plantjournal/update/${plant[0]._id}`} className="text-blue-500 hover:text-blue-700 font-semibold">
                                 Add Update
                             </Link>
