@@ -1,6 +1,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import withAuth from '../../components/withAuth';
 
 const PlantNavBar = () => {
     const router = useRouter();
@@ -23,4 +24,4 @@ const PlantNavBar = () => {
     )
 }
 
-export default PlantNavBar
+export default withAuth(PlantNavBar)

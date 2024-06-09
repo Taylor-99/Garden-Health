@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import withAuth from '../../components/withAuth';
 
 const challenges = () => {
 
@@ -79,4 +80,4 @@ const challenges = () => {
   )
 }
 
-export default challenges
+export default withAuth(challenges)

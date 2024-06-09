@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import withAuth from '../../components/withAuth';
 
 const weather = () => {
 
@@ -9,7 +10,6 @@ const weather = () => {
 
     const [weatherData, setWeatherData] = useState([]);
 
-    useEffect(() => {
         const fetchWeather = async () => {
 
             try {
@@ -17,7 +17,7 @@ const weather = () => {
                     credentials: 'include',
                     headers: {
                         Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
-                      }
+                    }
                 });
 
                 const data = await response.json()
@@ -28,17 +28,19 @@ const weather = () => {
             }
         }
 
-        fetchWeather();
+        useEffect(() => {
+            fetchWeather();
 
-    }, [weatherData, isLoading]);
+        }, []);
 
-    if (isLoading) return <p>Loading...</p>
-    if (!weatherData) return <p>No weather data</p>
+        if (isLoading) return <p>Loading...</p>
+        if (!weatherData) return <p>No weather data</p>
+        console.log(weatherData)
 
-    //convert from Kelvin to Fahrenheit
-    let fahrenheit = ((weatherData.main.temp) - 273.15) * 1.8 + 32
+        //convert from Kelvin to Fahrenheit
+        let fahrenheit = ((weatherData.main.temp) - 273.15) * 1.8 + 32
 
-    fahrenheit = fahrenheit.toFixed(2)
+        fahrenheit = fahrenheit.toFixed(2)
 
     return (
         <div className="flex justify-center">
@@ -61,4 +63,4 @@ const weather = () => {
     )
 }
 
-export default weather
+export default withAuth(weather)

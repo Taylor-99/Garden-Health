@@ -26,7 +26,7 @@ router.delete('/:plantId', verifyToken, async (req, res) =>{
 });
 
 // Route for marking a plant as watered
-router.get('/water/:plantID', verifyToken, async (req, res) =>{
+router.put('/water/:plantID', verifyToken, async (req, res) =>{
 
     try {
         // Find the plant in the database by its ID
@@ -39,6 +39,7 @@ router.get('/water/:plantID', verifyToken, async (req, res) =>{
 
         // Mark the plant as watered
         plant.watered = true;
+        plant.lastWatered = new Date();
 
         // Save the updated plant in the database
         await plant.save(); 
@@ -67,6 +68,7 @@ async function createNewPlant(userId, plantData) {
         plantName: plantData.plantName,
         plantSpecies: plantData.plantSpecies,
         watered: plantData.watered,
+        lastWatered: new Date(),
         plantDate: plantData.plantDate,
         user: userId
     };
@@ -156,11 +158,25 @@ router.get('/', verifyToken, async (req, res) =>{
         // Find all plants belonging to the authenticated user
         const userPlants = await db.Plant.find({ user: req.user._id});
 
+        const today = new Date();
+
         // Initialize an empty array to store plant details with their latest updates
         let updateList = [];
 
         // Iterate through each user plant
         for(const plant of userPlants){
+
+            const isSameDay = 
+                plant.lastWatered &&
+                plant.lastWatered.getDate() === today.getDate() &&
+                plant.lastWatered.getMonth() === today.getMonth() &&
+                plant.lastWatered.getFullYear() === today.getFullYear()
+
+            if(!isSameDay){
+                plant.watered = false;
+                plant.save()
+            }
+            
             // Find all updates for the current plant, sorted by createdAt date in descending order
             const userPlantUpdates = await db.PlantUpdate.find({ plant: plant._id}).sort({ createdAt: -1 });
 

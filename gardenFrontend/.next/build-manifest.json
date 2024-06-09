@@ -22,15 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/plantjournal": [
+    "/plantjournal/library": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal.js"
+      "static/chunks/pages/plantjournal/library.js"
     ],
-    "/plantjournal/createplant": [
+    "/plantjournal/search/[searchTerm]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/createplant.js"
+      "static/chunks/pages/plantjournal/search/[searchTerm].js"
     ]
   },
   "ampFirstPages": []

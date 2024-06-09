@@ -204,6 +204,7 @@ async function checkForReminders(userID){
 
     // Retrieve all reminders and plants associated with the user
     let getReminders = await db.Reminder.find({ user: userID})
+    console.log(getReminders)
     let plants = await db.Plant.find({ user: userID})
 
     // If the user has no reminders, create reminders based on predefined data
@@ -225,7 +226,7 @@ async function checkForReminders(userID){
                 // Check if a reminder for plant model already exists
                 const existingPlantReminder = await db.Reminder.findOne({
                     user: userID,
-                    message: getReminders[m].message
+                    message: remindersData[m].message
                 });
                 
                 // If reminder doesn't exist, create it
@@ -249,6 +250,7 @@ async function checkForReminders(userID){
 router.get('/reminders', verifyToken, async (req, res) =>{
 
     try {
+        
         // Retrieve and send reminders for the authenticated user
         const reminders = await checkForReminders(req.user._id)
         res.json(reminders)

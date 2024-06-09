@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { useCookies } from 'react-cookie';
 import NavBar from '../components/NavBar.jsx'
@@ -181,4 +180,4 @@ const CreatePlant = () => {
   )
 }
 
-export default CreatePlant
+export default withAuth(CreatePlant)

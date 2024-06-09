@@ -8,16 +8,19 @@ const verifyToken = async (req, res, next) => {
 
     try {
         // const token = req.cookies.token;
-        let token = req.headers.authorization
-        let extractedToken = token.slice(7);
+        // let token = req.headers.authorization
+        // let extractedToken = token.slice(7);
 
-        console.log('Verify token = ', extractedToken)
+        const authHeader = req.headers['authorization'];
+        const token = authHeader && authHeader.split(' ')[1];
 
-        if (!extractedToken) {
+        console.log('Verify token = ', token)
+
+        if (!token) {
             return res.status(401).json({ message: 'Access Denied' });
         } else{
+            const decoded = jwt.verify(token, process.env.SECRET);
 
-            const decoded = jwt.verify(extractedToken, process.env.SECRET);
             const user = await db.User.findById(decoded.userID);
     
             if (!user) {
@@ -32,7 +35,7 @@ const verifyToken = async (req, res, next) => {
         }
 
     } catch (err) {
-        res.status(400).json({ message: 'Invalid Token' });
+        res.status(400).json({ message: 'Token verification failed:' });
     }
 };
 

@@ -1,6 +1,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
+import withAuth from '../../components/withAuth';
 
 const reminders = () => {
 
@@ -12,6 +13,7 @@ const reminders = () => {
     const fetchReminders = async () => {
 
         try {
+            console.log("getting reminders")
             const response = await fetch('http://localhost:4000/dash/reminders', {
                 credentials: 'include',
                 headers: {
@@ -65,7 +67,7 @@ const reminders = () => {
         <ul>
             {reminders && reminders.map((reminder, index) => {
                 return (
-                    <li className="bg-white rounded-lg shadow-lg p-4 mb-2 text-center">
+                    <li className="bg-white rounded-lg shadow-lg p-4 mb-2 text-center" key={index}>
                             <p className="text-lg font-bold mb-2" >{reminder.message}</p>
                             <input 
                             type="button" 
@@ -81,4 +83,4 @@ const reminders = () => {
   )
 }
 
-export default reminders
+export default withAuth(reminders)

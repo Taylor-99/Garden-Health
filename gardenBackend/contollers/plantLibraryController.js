@@ -32,17 +32,34 @@ async function fetchPlantList(pageNum) {
 };
 
 // Show list of plants
-router.get('/getplants/', verifyToken, async (req, res) =>{
+router.get('/getplants/:pageNum', verifyToken, async (req, res) =>{
 
     try{
-        // Parse the page number from the query parameter, defaulting to page 1 if not provided
-        const page = req.query.page ? parseInt(req.query.page, 10) : 1; 
 
         // Fetch plant data based on the page number
-        const plantData = await fetchPlantList(page);
+        const plantData = await fetchPlantList(req.params.pageNum);
 
         // Send the fetched plant data as JSON response
         res.json(plantData);
+
+    }catch (error) {
+        console.error("Error fetching data from API:", error);
+        throw error;
+      }
+});
+
+// Show list of plants
+router.get('/getfavorites', verifyToken, async (req, res) =>{
+
+    try{
+        const findUserProfile = await db.UserProfile.find({ user: req.user._id})
+
+        console.log("profile =", findUserProfile)
+
+        let userFavorites = findUserProfile.favorite_plants
+        console.log("user favs =", userFavorites)
+        // Send the fetched plant data as JSON response
+        res.json(userFavorites);
 
     }catch (error) {
         console.error("Error fetching data from API:", error);
@@ -91,10 +108,14 @@ router.get('/detail/:sName', verifyToken, async (req, res) =>{
 });
 
 // Function to fetch plant search results based on a search term and page number
-async function fetchPlantSearch(searchTerm, page) {
+async function fetchPlantSearch(searchTerm) {
+
+    const encodedSearchTerm = searchTerm.split(' ').join('%20');
+
+    console.log(encodedSearchTerm)
 
     // Make an API request to search for plants based on the provided search term and page number
-    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${searchTerm}&page${page}`);
+    const plantAPIResponse = await fetch(`https://trefle.io/api/v1/plants/search?token=${process.env.Plant_API}&q=${encodedSearchTerm}`);
 
     // Check if the API request was successful
     if (!plantAPIResponse.ok) {
@@ -117,11 +138,9 @@ async function fetchPlantSearch(searchTerm, page) {
 router.get('/search/:searchTerm', verifyToken, async (req, res) =>{
 
     try{
-        // Parse the page number from the query parameter, defaulting to page 1 if not provided
-        const page = req.query.page ? parseInt(req.query.page, 10) : 1;
 
         // Fetch plant search results based on the search term and page number
-        const plantSearch = await fetchPlantSearch(req.params.searchTerm, page);
+        const plantSearch = await fetchPlantSearch(req.params.searchTerm);
 
         // Send the fetched plant search results as JSON response
         res.json(plantSearch);
@@ -134,7 +153,7 @@ router.get('/search/:searchTerm', verifyToken, async (req, res) =>{
 });
 
 // Update user's favorites
-router.get('/favorites/:sName', verifyToken, async (req, res) => {
+router.put('/favorites/:sName', verifyToken, async (req, res) => {
 
     try{
         // Find the user's profile based on their user ID
@@ -154,11 +173,12 @@ router.get('/favorites/:sName', verifyToken, async (req, res) => {
         if (!userProfile.favorite_plants.includes(req.params.sName)) {
             // Add the plant to the favorites
             userProfile.favorite_plants.push(req.params.sName);
+
             await userProfile.save(); // Save the updated user profile
         }
 
         // Send the updated user profile as response
-        res.send(userProfile)
+        res.send(userProfile.favorite_plants)
 
     }catch (error) {
         console.error("Error adding to favorite plants:", error);
@@ -191,7 +211,7 @@ router.delete('/favorites/:sName', verifyToken, async (req, res) => {
         await userProfile.save(); // Save the updated user profile
 
         // Send the updated user profile as response
-        res.json(userProfile);
+        res.json(userProfile.favorite_plants);
 
     } catch (error) {
         console.error("Error removing from favorite plants:", error);

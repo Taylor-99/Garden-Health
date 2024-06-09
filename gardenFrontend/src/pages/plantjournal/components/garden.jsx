@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
+import withAuth from '../../components/withAuth';
 
 const Garden = () => {
 
@@ -10,7 +11,6 @@ const Garden = () => {
 
     const [gardenData, setGardenData] = useState([]);
 
-    useEffect(() => {
         const fetchGarden = async () => {
 
             try {
@@ -18,7 +18,7 @@ const Garden = () => {
                     credentials: 'include',
                     headers: {
                         Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
-                      }
+                    }
                 });
 
                 const data = await response.json()
@@ -27,7 +27,9 @@ const Garden = () => {
             } catch (error) {
                 console.error('Error:', error.message);
             }
-        }
+        };
+        
+    useEffect(() => {
 
         fetchGarden();
 
@@ -35,8 +37,7 @@ const Garden = () => {
 
     if (isLoading) return <p>Loading...</p>
     if (!gardenData) return <p>No plants to show</p>
-
-    console.log(gardenData[0][1])
+    console.log(gardenData)
 
     return (
         <div>
@@ -45,9 +46,11 @@ const Garden = () => {
                     {gardenData && gardenData.map((plant, index) => {
                         return (
                             <li key={index} className="bg-white p-4 rounded-lg shadow-md w-48" >
-                                <img src={plant[1].plantImage} alt={plant[0].plantName} className="w-full h-32 object-cover rounded-md mb-2" ></img>
-                                <h2 className="text-lg font-semibold">{plant[0].plantName}</h2>
-                                <p className="text-gray-600" >Last update: {plant[0].updatedAt}</p>
+                                <Link href={`/plantjournal/details/${plant[0]._id}`}>
+                                    <img src={plant[1].plantImage} alt={plant[0].plantName} className="w-full h-32 object-cover rounded-md mb-2" ></img>
+                                    <h2 className="text-lg font-semibold">{plant[0].plantName}</h2>
+                                    <p className="text-gray-600" >Last update: {plant[0].updatedAt}</p>
+                                </Link>
 
                                 <br></br>
                             </li>
@@ -64,4 +67,4 @@ const Garden = () => {
       )
 }
 
-export default Garden;
+export default withAuth(Garden);

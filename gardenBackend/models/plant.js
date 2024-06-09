@@ -12,6 +12,9 @@ const plantSchema = new mongoose.Schema({
     watered: { 
         type: Boolean, 
         },
+    lastWatered: {
+        type: Date,
+    },
     plantDate: { 
         type: Date, 
         },
