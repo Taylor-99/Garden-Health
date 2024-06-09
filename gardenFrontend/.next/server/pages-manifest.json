@@ -2,7 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/wellnessjournal/mood": "pages/wellnessjournal/mood.js",
   "/wellnessjournal/activity": "pages/wellnessjournal/activity.js",
-  "/wellnessjournal/createactivitylog": "pages/wellnessjournal/createactivitylog.js"
+  "/social": "pages/social.js",
+  "/profile": "pages/profile.js"
 }

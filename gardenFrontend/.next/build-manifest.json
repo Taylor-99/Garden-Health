@@ -22,15 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/wellnessjournal/activity": [
+    "/profile": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/activity.js"
+      "static/chunks/pages/profile.js"
     ],
-    "/wellnessjournal/mood": [
+    "/social": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/mood.js"
+      "static/chunks/pages/social.js"
     ]
   },
   "ampFirstPages": []

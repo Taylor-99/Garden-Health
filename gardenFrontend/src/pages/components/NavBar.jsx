@@ -94,6 +94,24 @@ const NavBar = (props) => {
                                         </Link>
                                     </li>
                                     <li>
+                                        <Link 
+                                            href="/social" 
+                                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200" 
+                                            onClick={closeDropdown}
+                                        >
+                                            Social
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link 
+                                            href="/profile" 
+                                            className="block px-4 py-2 text-gray-800 hover:bg-gray-200" 
+                                            onClick={closeDropdown}
+                                        >
+                                            View Profile
+                                        </Link>
+                                    </li>
+                                    <li>
                                         < input 
                                             type="button"
                                             onClick={() => {

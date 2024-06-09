@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import fetch from 'isomorphic-unfetch'
-import withAuth from '../components/withAuth';
+import withAuth from '../../components/withAuth';
 
 const CreateProfile = () => {
     const [profileData, setProfileData] = useState({

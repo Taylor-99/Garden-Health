@@ -57,7 +57,7 @@ const CreateActivityLog = () => {
 
     return (
         <div>
-            <NavBar pageName="Plant Journal" />
+            <NavBar pageName='Wellness Journal' />
 
             <section>
                 <h2>Log Mood</h2>

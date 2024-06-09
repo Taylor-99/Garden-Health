@@ -40,7 +40,7 @@ const Mood = () => {
 
   return (
     <div>
-        <NavBar />
+        <NavBar pageName='Wellness Journal'/>
         <br></br>
         <WellnessNavBar />
         <br></br>

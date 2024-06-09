@@ -13,7 +13,7 @@ router.post('/createprofile', verifyToken, async (req, res) => {
 
     try {
         // Find the user by ID
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
 
         // Return 404 status with a message if user is not found
         if (!user) {
@@ -53,7 +53,7 @@ router.post('/createprofile', verifyToken, async (req, res) => {
 router.get('/', verifyToken, async (req, res) => {
     try {
         // Find the user profile by user ID
-        const userProfile = await db.UserProfile.find({ user: req.user.userID})
+        const userProfile = await db.UserProfile.find({ user: req.user._id})
 
         // Send the user profile as a response
         res.send(userProfile);

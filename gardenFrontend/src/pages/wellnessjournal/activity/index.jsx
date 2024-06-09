@@ -42,7 +42,7 @@ const Activity = () => {
 
   return (
     <div>
-        <NavBar />
+        <NavBar pageName='Wellness Journal' />
         <br></br>
         <WellnessNavBar />
         <br></br>
