@@ -48,24 +48,23 @@ const Mood = () => {
         <h1>Mood Log</h1>
 
         <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" >
-                    {moodLogData && moodLogData.map((mood, index) => {
-                        return (
-                            <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
-                                {/* <Link href={`/plantjournal/details/${plant[0]._id}`}> */}
-                                    <p>Log Date: {plant[0].updatedAt}</p>
-                                {/* </Link> */}
 
-                                <br></br>
-                            </li>
-                        );
-                    })}
-                    <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
-                        <Link href="/wellnessjournal/createmoodlog" className="text-blue-500 hover:text-blue-700 font-semibold">
-                            Log Mood
-                        </Link>
+            {moodLogData && moodLogData.map((mood, index) => {
+                return (
+                    <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
+                            <p>Log Date: {plant[0].updatedAt}</p>
+
+                        <br></br>
                     </li>
+                );
+            })}
+            <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
+                <Link href="/wellnessjournal/createmoodlog" className="text-blue-500 hover:text-blue-700 font-semibold">
+                    Log Mood
+                </Link>
+            </li>
 
-                </ul>
+        </ul>
 
     </div>
   )

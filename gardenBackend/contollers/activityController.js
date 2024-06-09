@@ -13,7 +13,7 @@ router.get('/', verifyToken, async (req, res) => {
 
     try {
         // Find user activity based on the user ID
-        const userActivity = await db.Activity.find({ user: req.user.userID})
+        const userActivity = await db.Activity.find({ user: req.user._id})
 
         // Send the user activity data
         res.send(userActivity)
@@ -70,7 +70,7 @@ async function createActivity(userId, activityData) {
         activity: activityData.activity,
         duration: activityData.duration,
         outdoors: activityData.outdoors,
-        activity_mood: activityData.aMood,
+        activity_mood: activityData.activity_Mood,
         user: userId,
     };
 
@@ -84,7 +84,7 @@ router.post('/create', verifyToken, async (req, res) =>{
 
     try {
         // Find the user by their ID
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
 
         // Return 404 status with a message if user is not found
         if (!user) {
@@ -92,7 +92,7 @@ router.post('/create', verifyToken, async (req, res) =>{
         }
 
         // Call the createActivity function to create a new activity
-        await createActivity(req.user.userID, req.body);
+        await createActivity(req.user._id, req.body);
 
         // Return a success message with 201 status
         return res.status(201).json({ message: 'Activity created successfully', post: createdPost });
