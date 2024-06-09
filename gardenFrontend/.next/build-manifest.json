@@ -22,10 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/plantjournal/createplant": [
+    "/plantjournal/garden": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/createplant.js"
+      "static/chunks/pages/plantjournal/garden.js"
+    ],
+    "/wellnessjournal/createmoodlog": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/wellnessjournal/createmoodlog.js"
     ],
     "/wellnessjournal/mood": [
       "static/chunks/webpack.js",

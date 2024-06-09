@@ -13,10 +13,10 @@ router.get('/', verifyToken, async (req, res) => {
 
     try {
         // Retrieve all mood entries for the authenticated user
-        const userMoods = await db.Mood.find({ user: req.user.userID})
+        const userMoods = await db.Mood.find({ user: req.user._id})
 
         // Send the retrieved mood entries as response
-        res.send(userMoods)
+        res.json(userMoods)
         
     } catch (error) {
         console.error(error.message);
@@ -88,7 +88,7 @@ router.put('/:moodid', async (req, res) => {
                 overallMood: req.body.overallMood,
                 energyLevel: req.body.energyLevel,
                 stressLevel: req.body.stressLevel,
-                journalEntry: req.body.journal
+                journalEntry: req.body.journalEntry
             }
         );
 
@@ -120,7 +120,7 @@ async function createMood(userId, moodData) {
         overallMood: moodData.overallMood,
         energyLevel: moodData.energyLevel,
         stressLevel: moodData.stressLevel,
-        journalEntry: moodData.journal,
+        journalEntry: moodData.journalEntry,
         user:userId
     };
 
@@ -153,7 +153,7 @@ router.post('/create', verifyToken, async (req, res) =>{
 
     try {
         // Find the user by their ID
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
 
         // Return a 404 status code if the user doesn't exist
         if (!user) {
@@ -161,7 +161,7 @@ router.post('/create', verifyToken, async (req, res) =>{
         }
 
         // Create a new mood log with the provided data
-        const mood = await createMood(req.user.userID, req.body);
+        const mood = await createMood(req.user._id, req.body);
 
         // Check if the mood log has a journal entry
         if(mood.journalEntry === true){
