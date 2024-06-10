@@ -6,6 +6,7 @@ require('dotenv').config();
 const router = require('express').Router();
 const db  = require('../models');
 const verifyToken = require('../middleware/VerifyJWT');
+const upload = require('../middleware/uploadImage');
 
 // Delete route for deleting a plant by its ID
 router.delete('/:plantId', verifyToken, async (req, res) =>{
@@ -90,16 +91,18 @@ async function createNewPlantUpdate(plantId, updateData) {
         updateData.rain = false
     }
 
+    // console.log(updateData.plantImage)
+
     // Define the properties of the new plant update
-    const newPlantUpdate = {
-        plantImage: updateData.plantImage,
-        temperature: updateData.temperature,
-        rain: updateData.rain,
-        health: updateData.health,
-        fertilizer: updateData.fertilizer,
-        notes: updateData.notes,
-        plant: plantId,
-    };
+    // const newPlantUpdate = {
+    //     plantImage: updateData.plantImage,
+    //     temperature: updateData.temperature,
+    //     rain: updateData.rain,
+    //     health: updateData.health,
+    //     fertilizer: updateData.fertilizer,
+    //     notes: updateData.notes,
+    //     plant: plantId,
+    // };
 
     // Create the new plant update in the database
     const createdUpdate = await db.PlantUpdate.create(newPlantUpdate);
@@ -107,9 +110,12 @@ async function createNewPlantUpdate(plantId, updateData) {
 }
 
 // Route to create a new plant
-router.post('/create', verifyToken, async (req, res) =>{
+router.post('/create',verifyToken, upload.single("plantImage"), async (req, res) =>{
 
     try {
+
+        console.log("file = ", req.file)
+        console.log("body = ", req.body)
         // Find the authenticated user
         const user = await db.User.findById(req.user._id);
 
@@ -121,10 +127,12 @@ router.post('/create', verifyToken, async (req, res) =>{
         // Create a new plant and get its ID
         const plantId = await createNewPlant(req.user._id, req.body);
 
+        
+
         // Create a new plant update for the created plant
         await createNewPlantUpdate(plantId, req.body);
 
-        // Send a success response
+        // // Send a success response
         return res.json({ message:'created plant' })
         
     } catch (error) {

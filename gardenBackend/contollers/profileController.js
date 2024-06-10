@@ -39,8 +39,11 @@ router.delete('/', async (req, res) =>{
 router.post('/createprofile', verifyToken, async (req, res) => {
 
     try {
+        console.log('in backend')
         // Find the user by ID
         const user = await db.User.findById(req.user._id);
+
+        console.log(user)
 
         // Return 404 status with a message if user is not found
         if (!user) {

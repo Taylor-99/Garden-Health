@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
-import fetch from 'isomorphic-unfetch'
 import withAuth from '../../components/withAuth';
 
 const CreateProfile = () => {
@@ -26,14 +25,18 @@ const CreateProfile = () => {
 
     const handleSubmit = async () => {
         try {
-            const response = await fetch('http://localhost:4000/profile/createprofile', {
+            console.log("getting Data")
+            const response = await fetch('http://localhost:4000/profile/createprofile/', {
                 method: 'POST',
+                credentials: 'include', // Important to include cookies
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
                 },
-                credentials: 'include', // Important to include cookies
                 body: JSON.stringify(profileData),
             });
+
+            console.log(response)
 
             const data = await response.json();
             console.log(data)

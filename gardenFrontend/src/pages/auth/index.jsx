@@ -54,17 +54,26 @@ export default function Auth(){
                 },
                 body: JSON.stringify(formData),
             });
-            console.log('sent data')
+
+            // Parse the response
             const data = await response.json();
+            console.log('Response data:', data);
 
-            if (response.ok) {
-                Cookies.set('token', data.token);
-
-                // Redirect or perform an action on successful login
-                navigate.replace('/profile/newprofile')
-            } else {
-                setError(data.message);
+            // Check if the response is ok
+            if (!response.ok || data.error) {
+                console.log('not ok')
+                const data = await response.json();
+                setError(data?.error);
+                console.log(data?.error)
+                return; // Exit the function to prevent navigation
+            }else{
+    
+                // If the response is ok and data is successfully received
+                setCookie('token', data.token);
+                setCookie('user', data.username);
+                navigate.replace('/profile/newprofile');
             }
+
         } catch (err) {
             setError('Network error');
         }
@@ -102,6 +111,7 @@ export default function Auth(){
                         value={formData.username} 
                         onChange={handleChange} 
                         className="w-full px-3 py-2 border rounded-md mb-4"
+                        required
                         />
 
                         <br></br>
@@ -113,6 +123,7 @@ export default function Auth(){
                         value={formData.password} 
                         onChange={handleChange} 
                         className="w-full px-3 py-2 border rounded-md mb-4"
+                        required
                         />
 
                         <br></br>
@@ -121,7 +132,8 @@ export default function Auth(){
                         <input type="submit" 
                         value="LogIn" className="w-full bg-green-900 text-white px-4 py-2 rounded-md cursor-pointer" />
                     </form>
-                </section>:
+                </section> :
+
                  <section className="bg-white rounded-lg shadow-md p-6" >
                  <h2 className="text-xl font-semibold mb-4 text-center" onClick={() => setShowLogin(!showLogin)}>
                     SignUp 

@@ -30,6 +30,21 @@ const CreatePlant = () => {
     const handleCreatePlant = async () => {
         try {
 
+            const formData = new FormData();
+            console.log('form data = ', formData)
+            formData.append('plantImage', plantFormData.plantImage);
+            formData.append('plantName', plantFormData.plantName)
+            formData.append('plantSpecies', plantFormData.plantSpecies)
+            formData.append('watered', plantFormData.watered)
+            formData.append('plantDate', plantFormData.plantDate)
+            formData.append('temperature', plantFormData.temperature)
+            formData.append('rain', plantFormData.rain)
+            formData.append('health', plantFormData.health)
+            formData.append('fertilizer', plantFormData.fertilizer)
+            formData.append('notes', plantFormData.notes)
+
+            console.log(formData)
+
             console.log("Sending data")
             const response = await fetch('http://localhost:4000/garden/create', {
                 method: 'POST',
@@ -38,7 +53,7 @@ const CreatePlant = () => {
                     'Content-Type': 'application/json',
                     Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
                 },
-                body: JSON.stringify(plantFormData),
+                body: JSON.stringify(formData),
             });
 
             await response.json();
@@ -76,7 +91,9 @@ const CreatePlant = () => {
 
             {error && <p className="text-red-500" >{error}</p>}
 
-            <form onSubmit={(e) => {
+            <form 
+                encType = 'multipart/formdata'
+                onSubmit={(e) => {
                 e.preventDefault();
                 setError('');
                 handleCreatePlant()
@@ -141,7 +158,7 @@ const CreatePlant = () => {
                 <br></br>
 
                 <label htmlFor="plantImage" className="block" >Plant Image: </label>
-                <input type='text' 
+                <input type='file' 
                 name="plantImage"  
                 placeholder="Upload image of your plant"
                 onChange={handleChange} 

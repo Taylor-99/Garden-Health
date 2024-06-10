@@ -19,33 +19,35 @@ router.post('/signup', async (req, res, next) => {
         const existingUser = await db.User.findOne({ username: newUser.username});
 
         if (existingUser) {
-            return res.json({ message: "Username already exists" });
+            return res.json({ error: "Username already exists" });
+        }else{
+
+            // Hash the password before saving the user
+            newUser.password  = bcrypt.hashSync(newUser.password, bcrypt.genSaltSync(10));
+        
+            const createUser = new db.User(newUser);
+            await createUser.save();
+    
+            // Create a token for the new user
+            const token = createToken(createUser._id)
+            let username = createUser.username
+
+            console.log(token)
+    
+            res.cookie("access_token", token, {
+                withCredentials: true,
+                httpOnly: false,
+            })
+            .cookie("checkToken", true, {
+                httpOnly: true,
+                withCredentials: true,
+              });
+    
+            res.status(201).json({ message: "User signed up successfully", success: true, token, username });
+    
+            next();
         }
   
-        // Hash the password before saving the user
-        newUser.password  = bcrypt.hashSync(newUser.password, bcrypt.genSaltSync(10));
-    
-        const createUser = new db.User.create(newUser);
-        await createUser.save();
-
-        console.log(createUser)
-
-        // Create a token for the new user
-        const token = createToken(createUser._id)
-        let username = createUser.username
-
-        res.cookie("access_token", token, {
-            withCredentials: true,
-            httpOnly: false,
-        })
-        .cookie("checkToken", true, {
-            httpOnly: true,
-            withCredentials: true,
-          });
-
-        res.status(201).json({ message: "User signed up successfully", success: true, token, username });
-
-        next();
 
     } catch (error) {
         console.error(error);
