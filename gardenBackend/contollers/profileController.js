@@ -12,16 +12,19 @@ const verifyToken = require('../middleware/VerifyJWT');
 router.delete('/', async (req, res) =>{
 
     try{
-        // Delete the mood entry by its ID
-        const deletedMood = await db.Mood.findByIdAndDelete( req.params.moodId );
+        // Remove everything associated with account
+        await db.UserProfile.remove({ user: req.user._id });
+        await db.Reminder.remove({ user: req.user._id });
+        await db.Challenges.remove({ user: req.user._id });
+        await db.Plant.remove({ user: req.user._id });
+        await db.PlantUpdate.remove({ user: req.user._id });
+        await db.Mood.remove({ user: req.user._id });
+        await db.Activity.remove({ user: req.user._id });
+        await db.CommunityPost.remove({ user: req.user._id });
+        await db.PostComment.remove({ user: req.user._id });
+        await db.User.remove({ user: req.user._id });
 
-        // If the mood entry doesn't exist, return a 404 status code
-        if (!deletedMood) {
-            return res.status(404).json({ message: 'Mood not found' });
-        }
-
-        // Delete the journal entry associated with the deleted mood
-        await db.Journal.findOneAndDelete( { mood: req.params.moodId });
+        res.clearCookie("token");
 
         // Send a success message with a 200 status code
         res.status(200).json({ message: 'Account Deleted' });

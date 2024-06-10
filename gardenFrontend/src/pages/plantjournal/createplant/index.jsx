@@ -114,13 +114,29 @@ const CreatePlant = () => {
 
                 <br></br>
 
-                <label htmlFor="watered" className="block" >Was it watered today: </label>
-                <input type='text' 
-                name="watered"  
-                onChange={handleChange} 
-                value={plantFormData.watered} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <label htmlFor="watered" className="block">Was it watered today:</label>
+                <div>
+                    <input
+                        type="radio"
+                        id="watered_yes"
+                        name="watered"
+                        value="Yes"
+                        checked={plantFormData.watered === "Yes"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="watered_yes" className="mr-4">Yes</label>
+                    <input
+                        type="radio"
+                        id="watered_no"
+                        name="watered"
+                        value="No"
+                        checked={plantFormData.watered === "No"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="watered_no">No</label>
+                </div>
 
                 <br></br>
 
@@ -147,46 +163,74 @@ const CreatePlant = () => {
                 <br></br>
 
                 <label htmlFor="rain" >Did it rain Today? </label>
-                <input type='text' 
-                name="rain"  
-                placeholder="Rain"
-                onChange={handleChange} 
-                value={plantFormData.rain} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <div>
+                    <input
+                        type="radio"
+                        id="rain_yes"
+                        name="rain"
+                        value="Yes"
+                        checked={plantFormData.rain === "Yes"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="rain_yes" className="mr-4">Yes</label>
+                    <input
+                        type="radio"
+                        id="rain_no"
+                        name="rain"
+                        value="No"
+                        checked={plantFormData.rain === "No"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="rain_no">No</label>
+                </div>
 
                 <br></br>
 
                 <label htmlFor="health" className="block" >Plant health status: </label>
-                <input type='text' 
-                name="health"  
-                placeholder="Status of Plant"
-                onChange={handleChange} 
-                value={plantFormData.health} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <select
+                    name="health"
+                    value={plantFormData.health}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select plant health</option>
+                    <option value="Healthy">Healthy</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
+                    <option value="Critical">Critical</option>
+                </select>
 
                 <br></br>
 
                 <label htmlFor="fertilizer" className="block" >What fertilizer did you use: </label>
-                <input type='text' 
-                name="fertilizer"  
-                placeholder="Fertilizer used"
-                onChange={handleChange} 
-                value={plantFormData.fertilizer} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <select
+                    name="fertilizer"
+                    value={plantFormData.fertilizer}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select fertilizer type</option>
+                    <option value="None">None</option>
+                    <option value="Organic">Organic</option>
+                    <option value="Inorganic">Inorganic</option>
+                    <option value="Liquid">Liquid</option>
+                    <option value="Granular">Granular</option>
+                    <option value="Slow-release">Slow-release</option>
+                    <option value="Other">Other</option>
+                </select>
 
                 <br></br>
 
                 <label htmlFor="notes" className="block" >Any other notes: </label>
-                <input type='text' 
-                name="notes"  
-                placeholder="Additional notes about plant"
-                onChange={handleChange} 
-                value={plantFormData.notes} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <textarea 
+                    name="notes" 
+                    placeholder="Additional notes about plant" 
+                    value={plantFormData.notes} 
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 
+                ></textarea>
 
                 <br></br>
                 <br></br>

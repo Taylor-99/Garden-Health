@@ -11,9 +11,6 @@ const moodSchema = new mongoose.Schema({
     stressLevel: { 
         type: String, 
     },
-    journalEntry: { 
-        type: Boolean, 
-    },
     user:{
         type: mongoose.Types.ObjectId, 
         ref: 'User'

@@ -37,6 +37,22 @@ const Activity = () => {
 
     }, []);
 
+    function setDate(dateString){
+        
+        // Create a Date object from the date string
+        const date = new Date(dateString);
+        
+        // Get the individual components of the date
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; 
+        const day = date.getDate();
+        
+        let updatedDate = `${month}/${day}/${year}`
+        
+        return updatedDate
+    };
+
+
     console.log(activityLogData)
 
 
@@ -54,7 +70,11 @@ const Activity = () => {
             {activityLogData && activityLogData.map((activity, index) => {
                 return (
                     <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
-                            <p>Log Date: </p>
+                            <h2 className="text-xl font-semibold mb-2">Log Date: {setDate(activity.createdAt)}</h2>
+                            <p className="mb-2">Activity: {activity.activity}</p>
+                            <p className="mb-2">Duration: {activity.duration} min</p>
+                            <p className="mb-2">Was Activity Outdoors: {activity.outdoors}</p>
+                            <p className="mb-2">Mood After Activity: {activity.activity_mood}</p>
 
                         <br></br>
                     </li>

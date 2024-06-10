@@ -65,11 +65,18 @@ router.put('/:activityId', async (req, res) => {
 // Function to create a new activity
 async function createActivity(userId, activityData) {
 
+
+    let booleanActivity = false
+
+        if(activityData.outdoors.toLowerCase() === 'yes'){
+            booleanActivity = true
+        }
+
     // Define the new activity object with provided data
     const newActivity = {
         activity: activityData.activity,
         duration: activityData.duration,
-        outdoors: activityData.outdoors,
+        outdoors: booleanActivity,
         activity_mood: activityData.activity_Mood,
         user: userId,
     };
@@ -95,7 +102,7 @@ router.post('/create', verifyToken, async (req, res) =>{
         await createActivity(req.user._id, req.body);
 
         // Return a success message with 201 status
-        return res.status(201).json({ message: 'Activity created successfully', post: createdPost });
+        return res.status(201).json({ message: 'Activity created successfully'});
         
     } catch (error) {
         console.error("Error creating activity:", error.message);

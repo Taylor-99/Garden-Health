@@ -87,8 +87,7 @@ router.put('/:moodid', async (req, res) => {
             {
                 overallMood: req.body.overallMood,
                 energyLevel: req.body.energyLevel,
-                stressLevel: req.body.stressLevel,
-                journalEntry: req.body.journalEntry
+                stressLevel: req.body.stressLevel
             }
         );
 
@@ -164,7 +163,8 @@ router.post('/create', verifyToken, async (req, res) =>{
         const mood = await createMood(req.user._id, req.body);
 
         // Check if the mood log has a journal entry
-        if(mood.journalEntry === true){
+        if(req.body.entry !== ""){
+            console.log("Journal created")
             // Create a journal entry associated with the mood log
             await createJournal(mood._id, req.body.journalEntry);
         }

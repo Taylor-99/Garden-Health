@@ -108,42 +108,103 @@ const CreateProfile = () => {
 
                 <br></br>
 
-                <input 
-                type="text" 
-                name="state" 
-                placeholder="State" 
-                value={profileData.state} 
-                onChange={handleChange}
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                 />
+                <select
+                    name="state"
+                    value={profileData.state}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select a state</option>
+                    <option value="AL">Alabama</option>
+                    <option value="AK">Alaska</option>
+                    <option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option>
+                    <option value="CA">California</option>
+                    <option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option>
+                    <option value="DE">Delaware</option>
+                    <option value="DC">District Of Columbia</option>
+                    <option value="FL">Florida</option>
+                    <option value="GA">Georgia</option>
+                    <option value="HI">Hawaii</option>
+                    <option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option>
+                    <option value="IN">Indiana</option>
+                    <option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option>
+                    <option value="KY">Kentucky</option>
+                    <option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option>
+                    <option value="MD">Maryland</option>
+                    <option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option>
+                    <option value="MN">Minnesota</option>
+                    <option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option>
+                    <option value="MT">Montana</option>
+                    <option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option>
+                    <option value="NH">New Hampshire</option>
+                    <option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option>
+                    <option value="NY">New York</option>
+                    <option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option>
+                    <option value="OH">Ohio</option>
+                    <option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option>
+                    <option value="PA">Pennsylvania</option>
+                    <option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option>
+                    <option value="SD">South Dakota</option>
+                    <option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option>
+                    <option value="UT">Utah</option>
+                    <option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option>
+                    <option value="WA">Washington</option>
+                    <option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option>
+                    <option value="WY">Wyoming</option>
+                </select>
 
                 <br></br>
 
-                <input 
-                type="text" 
-                name="gExperience" 
-                placeholder="Gardening Experience" 
-                value={profileData.gExperience} 
-                onChange={handleChange} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <select
+                    name="gardeningExperience"
+                    value={profileData.gExperience}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select gardening experience</option>
+                    <option value="Beginner">Beginner</option>
+                    <option value="Beginner">Amateur</option>
+                    <option value="Intermediate">Intermediate</option>
+                    <option value="Advanced">Advanced</option>
+                    <option value="Advanced">Expert</option>
+                </select>
 
                 <br></br>
 
-                <input 
-                type="text" 
-                name="aExperience" 
-                placeholder="Activity Experience" 
-                value={profileData.aExperience} 
-                onChange={handleChange} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <select
+                    name="activityLevel"
+                    value={profileData.aExperience} 
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select activity level</option>
+                    <option value="Sedentary">Sedentary (little to no exercise)</option>
+                    <option value="Lightly Active">Lightly Active (light exercise/sports 1-3 days a week)</option>
+                    <option value="Moderately Active">Moderately Active (moderate exercise/sports 3-5 days a week)</option>
+                    <option value="Very Active">Very Active (hard exercise/sports 6-7 days a week)</option>
+                    <option value="Extra Active">Extra Active (very hard exercise/sports & physical job or 2x training)</option>
+                </select>
 
                 <br></br>
 
                 <textarea 
                 name="bio" 
-                placeholder="Bio" 
+                placeholder="Tell us about yourself" 
                 value={profileData.bio} 
                 onChange={handleChange}
                 className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 

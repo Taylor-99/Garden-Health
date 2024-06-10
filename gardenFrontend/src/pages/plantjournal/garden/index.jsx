@@ -39,7 +39,6 @@ const Garden = () => {
 
     if (isLoading) return <p>Loading...</p>
     if (!gardenData) return <p>No plants to show</p>
-    console.log(gardenData)
 
     return (
         <div className="min-h-screen flex-col items-center justify-center bg-gray-100">

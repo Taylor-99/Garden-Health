@@ -36,6 +36,21 @@ const Mood = () => {
 
     }, []);
 
+    function setDate(dateString){
+        
+        // Create a Date object from the date string
+        const date = new Date(dateString);
+        
+        // Get the individual components of the date
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; 
+        const day = date.getDate();
+        
+        let updatedDate = `${month}/${day}/${year}`
+        
+        return updatedDate
+    };
+
     console.log(moodLogData)
 
   return (
@@ -52,8 +67,12 @@ const Mood = () => {
             {moodLogData && moodLogData.map((mood, index) => {
                 return (
                     <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
-                            <p>{mood.overall}</p>
 
+                        <h2 className="text-xl font-semibold mb-2">Mood Log: {setDate(mood.createdAt)}</h2>
+
+                        <p className="mb-2">Overall Mood: {mood.overallMood}</p>
+                        <p className="mb-2">Energy Mood: {mood.energyLevel}</p>
+                        <p className="mb-2">Stress Mood: {mood.stressLevel}</p>
                         <br></br>
                     </li>
                 );

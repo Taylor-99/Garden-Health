@@ -105,47 +105,75 @@ const UpdatePlant = () => {
 
                 <br></br>
 
-                <label htmlFor="rain" className="block">Did it rain Today? </label>
-                <input type='text' 
-                name="rain"  
-                placeholder="Rain"
-                onChange={handleChange} 
-                value={updateFormData.rain} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <label htmlFor="rain" >Did it rain Today? </label>
+                <div>
+                    <input
+                        type="radio"
+                        id="rain_yes"
+                        name="rain"
+                        value="Yes"
+                        checked={updateFormData.rain === "Yes"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="rain_yes" className="mr-4">Yes</label>
+                    <input
+                        type="radio"
+                        id="rain_no"
+                        name="rain"
+                        value="No"
+                        checked={updateFormData.rain === "No"}
+                        onChange={handleChange}
+                        className="mr-2"
+                    />
+                    <label htmlFor="rain_no">No</label>
+                </div>
 
                 <br></br>
 
-                <label htmlFor="health" className="block">Plant health status: </label>
-                <input type='text' 
-                name="health"  
-                placeholder="Status of Plant"
-                onChange={handleChange} 
-                value={updateFormData.health} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <label htmlFor="health" className="block" >Plant health status: </label>
+                <select
+                    name="health"
+                    value={updateFormData.health}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select plant health</option>
+                    <option value="Healthy">Healthy</option>
+                    <option value="Fair">Fair</option>
+                    <option value="Poor">Poor</option>
+                    <option value="Critical">Critical</option>
+                </select>
 
                 <br></br>
 
-                <label htmlFor="fertilizer" className="block">What fertilizer did you use: </label>
-                <input type='text' 
-                name="fertilizer"  
-                placeholder="Fertilizer used"
-                onChange={handleChange} 
-                value={updateFormData.fertilizer} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <label htmlFor="fertilizer" className="block" >What fertilizer did you use: </label>
+                <select
+                    name="fertilizer"
+                    value={updateFormData.fertilizer}
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                >
+                    <option value="">Select fertilizer type</option>
+                    <option value="None">None</option>
+                    <option value="Organic">Organic</option>
+                    <option value="Inorganic">Inorganic</option>
+                    <option value="Liquid">Liquid</option>
+                    <option value="Granular">Granular</option>
+                    <option value="Slow-release">Slow-release</option>
+                    <option value="Other">Other</option>
+                </select>
 
                 <br></br>
 
                 <label htmlFor="notes" className="block">Any other notes: </label>
-                <input type='text' 
-                name="notes"  
-                placeholder="Additional notes about plant"
-                onChange={handleChange} 
-                value={updateFormData.notes} 
-                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                />
+                <textarea 
+                    name="notes" 
+                    placeholder="Additional notes about plant" 
+                    value={updateFormData.notes} 
+                    onChange={handleChange}
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 
+                ></textarea>
 
                 <br></br>
                 <br></br>

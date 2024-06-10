@@ -2,8 +2,10 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/profile/newprofile": "pages/profile/newprofile.js",
+  "/auth": "pages/auth.js",
   "/dashboard": "pages/dashboard.js",
-  "/profile": "pages/profile.js",
-  "/wellnessjournal/activity": "pages/wellnessjournal/activity.js"
+  "/wellnessjournal/activity": "pages/wellnessjournal/activity.js",
+  "/profile/newprofile": "pages/profile/newprofile.js",
+  "/wellnessjournal/mood": "pages/wellnessjournal/mood.js",
+  "/plantjournal/garden": "pages/plantjournal/garden.js"
 }

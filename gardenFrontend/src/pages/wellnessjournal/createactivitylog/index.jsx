@@ -73,8 +73,9 @@ const CreateActivityLog = () => {
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     setError('');
-                    handleCreateMoodLog()
+                    handleCreateActivityLog()
                 }} className="mt-4 space-y-4 mx-auto max-w-md">
+
                     <label htmlFor="activity" className="block">Activity: </label>
                     <input type='text' 
                     name="activity"
@@ -86,8 +87,8 @@ const CreateActivityLog = () => {
 
                     <br></br>
 
-                    <label htmlFor="duration" className="block">Duration of the activity: </label>
-                    <input type="text" 
+                    <label htmlFor="duration" className="block">Duration of the activity in minutes: </label>
+                    <input type='number' 
                     name="duration"
                     onChange={handleChange} 
                     value={activityFormData.duration} 
@@ -96,23 +97,50 @@ const CreateActivityLog = () => {
 
                     <br></br>
 
-                    <label htmlFor="outdoors" className="block">Was this activity outdoors? </label>
-                    <input type='text' 
-                    name="outdoors"  
-                    onChange={handleChange} 
-                    value={activityFormData.outdoors} 
-                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                    />
+                    <div>
+                        <label htmlFor="outdoors" className="block">Was this activity outdoors? </label>
+                        <div className="flex items-center mt-1">
+                            <input 
+                                type="radio" 
+                                id="outdoors_yes" 
+                                name="outdoors" 
+                                value="Yes" 
+                                checked={activityFormData.outdoors === "Yes"} 
+                                onChange={handleChange} 
+                                className="mr-2"
+                            />
+                            <label htmlFor="outdoors_yes" className="mr-4">Yes</label>
+                            
+                            <input 
+                                type="radio" 
+                                id="outdoors_no" 
+                                name="outdoors" 
+                                value="No" 
+                                checked={activityFormData.outdoors === "No"} 
+                                onChange={handleChange} 
+                                className="mr-2"
+                            />
+                            <label htmlFor="outdoors_no">No</label>
+                        </div>
+                    </div>
 
                     <br></br>
 
-                    <label htmlFor="activitymood" className="block">How did you feel after the activity? </label>
-                    <input type='text' 
-                    name="activitymood"  
-                    onChange={handleChange} 
-                    value={activityFormData.activity_mood} 
-                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
-                    />
+                    <label htmlFor="activitymood" className="block">What is your overall moood after the activity? </label>
+                    <select
+                        name="overallMoodAfterActivity"
+                        value={activityFormData.activity_mood}
+                        onChange={handleChange}
+                        className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                    >
+                        <option value="">Select overall mood after activity</option>
+                        <option value="Happy">Happy</option>
+                        <option value="Content">Content</option>
+                        <option value="Neutral">Neutral</option>
+                        <option value="Sad">Sad</option>
+                        <option value="Stressed">Stressed</option>
+                        <option value="Other">Other</option>
+                    </select>
 
                     <br></br>
                     <br></br>

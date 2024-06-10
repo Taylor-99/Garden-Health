@@ -17,6 +17,7 @@ router.post('/signup', async (req, res, next) => {
 
         // Check if the username already exists
         const existingUser = await db.User.findOne({ username: newUser.username});
+
         if (existingUser) {
             return res.json({ message: "Username already exists" });
         }
@@ -24,8 +25,10 @@ router.post('/signup', async (req, res, next) => {
         // Hash the password before saving the user
         newUser.password  = bcrypt.hashSync(newUser.password, bcrypt.genSaltSync(10));
     
-        const createUser = new db.User(newUser);
+        const createUser = new db.User.create(newUser);
         await createUser.save();
+
+        console.log(createUser)
 
         // Create a token for the new user
         const token = createToken(createUser._id)

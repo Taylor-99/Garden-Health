@@ -13,7 +13,7 @@ const Delete = () => {
     const handleDelete = async () => {
 
         try {
-            const response = await fetch(`http://localhost:4000/profile/${plantId}`, {
+            const response = await fetch(`http://localhost:4000/profile`, {
                 method: 'DELETE',
                 credentials: 'include',
                 headers: {
@@ -22,7 +22,7 @@ const Delete = () => {
             });
 
             if(response.ok){
-                router.replace('/plantjournal/garden');
+                router.replace('/auth');
             }else {
                 setError(data.message);
             }
