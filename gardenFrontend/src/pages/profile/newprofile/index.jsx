@@ -50,76 +50,110 @@ const CreateProfile = () => {
     };
 
     return (
-        <div>
-            <h2>Create Profile</h2>
+        <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto" >
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {success && <p style={{ color: 'green' }}>{success}</p>}
+            <h2 className="text-xl font-semibold mt-4 text-center" >Create Profile</h2>
+
+            {error && <p className="text-red-500">{error}</p>}
+            {success && <p className="text-green-500">{success}</p>}
 
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setError('');
                 setSuccess('');
                 handleSubmit()
-            }}>
+            }} className="mt-4 space-y-4 mx-auto max-w-md">
+
                 <input 
                 type="text" 
                 name="fName" 
                 placeholder="First Name" 
                 value={profileData.fName} 
-                onChange={handleChange} 
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 
                 required />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="lName" 
                 placeholder="Last Name" 
                 value={profileData.lName} 
-                onChange={handleChange} />
+                onChange={handleChange} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="image" 
                 placeholder="Image URL" 
                 value={profileData.image} 
-                onChange={handleChange} />
+                onChange={handleChange} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="city" 
                 placeholder="City" 
                 value={profileData.city} 
-                onChange={handleChange} />
+                onChange={handleChange} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="state" 
                 placeholder="State" 
                 value={profileData.state} 
-                onChange={handleChange} />
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                 />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="gExperience" 
                 placeholder="Gardening Experience" 
                 value={profileData.gExperience} 
-                onChange={handleChange} />
+                onChange={handleChange} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                />
+
                 <br></br>
+
                 <input 
                 type="text" 
                 name="aExperience" 
                 placeholder="Activity Experience" 
                 value={profileData.aExperience} 
-                onChange={handleChange} />
+                onChange={handleChange} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
+                />
+
                 <br></br>
+
                 <textarea 
                 name="bio" 
                 placeholder="Bio" 
                 value={profileData.bio} 
-                onChange={handleChange}></textarea>
+                onChange={handleChange}
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 
+                ></textarea>
+
                 <br></br>
                 <br></br>
-                <button type="submit">Create Profile</button>
+
+                <input type="submit" 
+                value="Submit" className="bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 cursor-pointer mx-auto block" />
             </form>
         </div>
     )

@@ -8,9 +8,8 @@ import RemindersComponent from './components/reminders.jsx'
 const Dashboard = () => {
 
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100" >
       <NavBar pageName="Dashboard" />
-      <h1>This is the Dashboard</h1>
       <br></br>
       <WeatherComponent />
       <br></br>

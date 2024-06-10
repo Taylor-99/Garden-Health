@@ -35,7 +35,6 @@ const weather = () => {
 
         if (isLoading) return <p>Loading...</p>
         if (!weatherData) return <p>No weather data</p>
-        console.log(weatherData)
 
         //convert from Kelvin to Fahrenheit
         let fahrenheit = ((weatherData.main.temp) - 273.15) * 1.8 + 32
@@ -44,7 +43,7 @@ const weather = () => {
 
     return (
         <div className="flex justify-center">
-            <div className="bg-gray-200 p-4 rounded-lg shadow-md flex items-center justify-between max-w-xs w-80">
+            <div className="bg-slate-50 p-4 rounded-lg shadow-md flex items-center justify-between max-w-xs w-80">
                 <div className="">
                     <p className="text-center">{weatherData.weather[0].main}</p>
                     <img
@@ -53,8 +52,7 @@ const weather = () => {
                         alt={weatherData.weather[0].description}
                     />
                 </div>
-                <div className="absolute top-50 left-1/2 bg-gray-400 w-1 h-32"></div>
-                <div className="text-center p-5">
+                <div className=" border-l border-gray-400 pl-10 text-center p-5">
                     <p className="text-sm text-gray-600 text-center">{weatherData.name}</p>
                     <p className="text-2xl font-bold text-center" >{fahrenheit}°</p>
                 </div>

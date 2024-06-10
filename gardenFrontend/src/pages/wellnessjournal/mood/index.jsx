@@ -39,7 +39,7 @@ const Mood = () => {
     console.log(moodLogData)
 
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
         <NavBar pageName='Wellness Journal'/>
         <br></br>
         <WellnessNavBar />
@@ -52,7 +52,7 @@ const Mood = () => {
             {moodLogData && moodLogData.map((mood, index) => {
                 return (
                     <li key={index} className="bg-white p-4 rounded-lg shadow-md w-45" >
-                            <p>Log Date: {plant[0].updatedAt}</p>
+                            <p>{mood.overall}</p>
 
                         <br></br>
                     </li>

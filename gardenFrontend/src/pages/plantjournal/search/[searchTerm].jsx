@@ -91,14 +91,20 @@ const Search = () => {
     console.log(searchedData)
 
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
         <div>
             <NavBar pageName="Plant Journal" />
             <br></br>
-            <PlantNavBar />
+
+            <button onClick={() => router.back()} className="text-emerald-700 hover:text-emerald-900 font-semibold focus:outline-none">
+            Go Back
+            </button>
+
+            <br></br>
             <br></br>
 
-            <Link href='plantjournal/library'> Go Back</Link>
+            <PlantNavBar />
+            <br></br>
 
             <div className="flex justify-center space-x-4" >
                 <input 
@@ -126,13 +132,15 @@ const Search = () => {
                                 <Link href={`/plantjournal/plantlibrarydetails/${item.scientific_name}`}>
                                     <img src={item.image_url} alt={item.common_name} className="w-full h-32 object-cover rounded-md mb-2" ></img>
                                     <h2 className="text-lg font-semibold">{item.common_name}</h2>
-                                    <input 
-                                        type='button' 
-                                        value={isFavorite ? 'Remove Favorite' : 'Add Favorite'} 
-                                        onClick={() => toggleFavorite(item.scientific_name)} 
-                                        className={`px-4 py-2 rounded ${isFavorite ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
-                                    />
+                                    <p className="text-md">{item.scientific_name}</p>
                                 </Link>
+                                <br></br>
+                                <input 
+                                    type='button' 
+                                    value={isFavorite ? 'Remove Favorite' : 'Add Favorite'} 
+                                    onClick={() => toggleFavorite(item.scientific_name)} 
+                                    className={`px-4 py-2 rounded ${isFavorite ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                                />
 
                                 <br></br>
                             </li>

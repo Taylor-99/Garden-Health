@@ -45,13 +45,19 @@ const PlantLibraryDetails = () => {
     console.log(plant)
     
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
         <NavBar pageName="Plant Journal" />
+        <br></br>
+
+        <button onClick={() => router.back()} className="text-emerald-700 hover:text-emerald-900 font-semibold focus:outline-none">
+            Go Back
+        </button>
+
+        <br></br>
         <br></br>
         <PlantNavBar />
         <br></br>
 
-        <Link href='plantjournal/library'> Go Back </Link>
 
         <h1 className="text-2xl font-bold mb-4 text-center">{plant.common_name} Details</h1>
 

@@ -8,6 +8,8 @@ import withAuth from '../../components/withAuth';
 
 const CreateActivityLog = () => {
 
+    const router = useRouter()
+
     const [activityFormData, setActivityFormData] = useState({
         activity: '',
         duration: '',
@@ -56,61 +58,67 @@ const CreateActivityLog = () => {
     }
 
     return (
-        <div>
+        <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
             <NavBar pageName='Wellness Journal' />
 
-            <section>
-                <h2>Log Mood</h2>
+            <button onClick={() => router.back()} className="text-emerald-700 hover:text-emerald-900 font-semibold focus:outline-none">
+            Go Back
+            </button>
 
-                {error && <p style={{ color: 'red' }}>{error}</p>}
+            <section className="mt-8">
+                <h2 className="text-xl font-semibold mt-4 text-center">Log Mood</h2>
 
-                <Link href='/wellnessjournal/activity'> Go Back </Link>
+                {error && <p className="text-red-500">{error}</p>}
 
                 <form onSubmit={(e) => {
                     e.preventDefault();
                     setError('');
                     handleCreateMoodLog()
-                }}>
-                    <label htmlFor="activity" >Activity: </label>
+                }} className="mt-4 space-y-4 mx-auto max-w-md">
+                    <label htmlFor="activity" className="block">Activity: </label>
                     <input type='text' 
                     name="activity"
                     placeholder='What activity did you complete'
                     onChange={handleChange} 
                     value={activityFormData.activity} 
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                     />
 
                     <br></br>
 
-                    <label htmlFor="duration" >Duration of the activity: </label>
+                    <label htmlFor="duration" className="block">Duration of the activity: </label>
                     <input type="text" 
                     name="duration"
                     onChange={handleChange} 
                     value={activityFormData.duration} 
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                     />
 
                     <br></br>
 
-                    <label htmlFor="outdoors" >Was this activity outdoors? </label>
+                    <label htmlFor="outdoors" className="block">Was this activity outdoors? </label>
                     <input type='text' 
                     name="outdoors"  
                     onChange={handleChange} 
                     value={activityFormData.outdoors} 
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                     />
 
                     <br></br>
 
-                    <label htmlFor="activitymood" >How did you feel after the activity? </label>
+                    <label htmlFor="activitymood" className="block">How did you feel after the activity? </label>
                     <input type='text' 
                     name="activitymood"  
                     onChange={handleChange} 
                     value={activityFormData.activity_mood} 
+                    className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                     />
 
                     <br></br>
                     <br></br>
 
                     <input type="submit" 
-                    value="Submit" />
+                    value="Submit" className="bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 cursor-pointer mx-auto block"/>
                 </form>
             </section>
         </div>

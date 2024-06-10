@@ -8,6 +8,8 @@ import withAuth from '../../components/withAuth';
 
 const CreateMoodLog = () => {
 
+    const router = useRouter()
+
     const [moodFormData, setMoodFormData] = useState({
         overallMood: '',
         energyLevel: '',
@@ -57,69 +59,77 @@ const CreateMoodLog = () => {
     }
 
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
         <NavBar pageName='Wellness Journal' />
 
-        <section>
-            <h2>Log Mood</h2>
+        <button onClick={() => router.back()} className="text-emerald-700 hover:text-emerald-900 font-semibold focus:outline-none">
+            Go Back
+        </button>
 
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+        <section className="mt-8">
+            <h2 className="text-xl font-semibold mt-4 text-center">Log Mood</h2>
 
-            <Link href='wellnessjournal/mood'> Go back </Link>
+            {error && <p className="text-red-500">{error}</p>}
 
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setError('');
                 handleCreateMoodLog()
-            }}>
-                <label htmlFor="overallmood" >Overall Mood: </label>
+            }} className="mt-4 space-y-4 mx-auto max-w-md">
+
+                <label htmlFor="overallmood" className="block">Overall Mood: </label>
                 <input type='text' 
                 name="overallMood"
                 onChange={handleChange} 
                 value={moodFormData.overallMood} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 
                 <br></br>
 
-                <label htmlFor="energylevel" >Energy Level: </label>
+                <label htmlFor="energylevel" className="block">Energy Level: </label>
                 <input type="text" 
                 name="energylevel"
                 onChange={handleChange} 
                 value={moodFormData.energyLevel} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 
                 <br></br>
 
-                <label htmlFor="stresslevel" >Stress Level: </label>
+                <label htmlFor="stresslevel" className="block">Stress Level: </label>
                 <input type='text' 
                 name="stresslevel"  
                 onChange={handleChange} 
                 value={moodFormData.stressLevel} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 
                 <br></br>
 
-                <label htmlFor="journalentry" >Would you like to make a journal entry? </label>
+                <label htmlFor="journalentry" className="block">Would you like to make a journal entry? </label>
                 <input type='text' 
                 name="journalentry"  
                 onChange={handleChange} 
                 value={moodFormData.journalEntry} 
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 
                 <br></br>
 
-                <label htmlFor="entry" >Journal Entry: </label>
+                <label htmlFor="entry" className="block">Journal Entry: </label>
                 <input type='text' 
                 name="entry"  
                 onChange={handleChange} 
-                value={moodFormData.entry} 
+                value={moodFormData.entry}
+                className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600" 
                 />
 
                 <br></br>
                 <br></br>
 
                 <input type="submit" 
-                value="Submit" />
+                value="Submit" className="bg-lime-500 text-white px-4 py-2 rounded hover:bg-lime-600 cursor-pointer mx-auto block" />
             </form>
         </section>
     </div>

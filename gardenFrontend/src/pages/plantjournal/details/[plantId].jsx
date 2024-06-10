@@ -64,8 +64,6 @@ const PlantDetails = () => {
     if (isLoading) return <p>Loading...</p>
     if (!plant) return <p>No Plant data</p>
 
-    console.log(plant)
-
     function setDate(dateString){
 
         // Create a Date object from the date string
@@ -82,19 +80,24 @@ const PlantDetails = () => {
     };
 
     return (
-        <div>
+        <div className="min-h-screen flex-col items-center justify-center bg-gray-100" >
             <NavBar pageName="Plant Journal" />
+
+            <button onClick={() => router.back()} className="text-emerald-700 hover:text-emerald-900 font-semibold focus:outline-none">
+            Go Back
+            </button>
+
             <br></br>
             <PlantNavBar />
             <br></br>
             
-            <Link href='plantjournal/garden'> Go Back </Link>
+            <br></br>
 
             <div>
-                <div className="bg-white shadow-md rounded-lg overflow-hidden h-64 flex">
+                <div className="bg-white p-6 max-w-sm sm:max-w-sm md:max-w-md lg:max-w-lg mx-auto shadow-md rounded-lg overflow-hidden h-64 flex flex-row">
 
                     <div>
-                        <img src={plant[1][plant[1].length-1].plantImage} className="w-48 h-48 p-2 md:w-auto" alt="Plant" />
+                        <img src={plant[1][plant[1].length-1].plantImage} className="w-48 h-32 sm:w-48 sm:h-48 p-2" alt="Plant" />
                     </div>
                     <div className="ml-4">
                         <h2 className="text-xl font-semibold">{plant[0].plantName}</h2>
@@ -103,19 +106,20 @@ const PlantDetails = () => {
                         <p className="mb-2"><span className="font-semibold">Last update: </span>{setDate(plant[1][plant[1].length-1].updatedAt)}</p>
                         <p className="mb-2"><span className="font-semibold">Notes: </span> {plant[1][plant[1].length-1].notes}</p>
                         <br></br>
-                        <input 
-                            type="button" 
-                            value="Water Plant"
-                            onClick={() => wasWatered()}
-                            disabled={plant[0].watered}
-                            className="bg-blue-500 text-white px-4 py-2 rounded"
-                        />
+                        <div className="flex flex-col justify-center mb-4">
+                            <input 
+                                type="button" 
+                                value={plant[0].watered ? "Plant Watered" : "Water Plant" }
+                                onClick={() => wasWatered()}
+                                disabled={plant[0].watered}
+                                className={`${plant[0].watered ? 'bg-green-300' : 'bg-blue-500'} text-white px-4 py-2 w-48 rounded`}
+                            />
+                        </div>
                     </div>
                 </div>
 
                 <br></br>
-                <h2 className="text-2xl font-bold mb-4" >Updates</h2>
-                <br></br>
+                <h2 className="text-2xl text-center font-bold mb-4" >Updates</h2>
 
                 <div>
                     <ul className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -136,14 +140,25 @@ const PlantDetails = () => {
                                 </li>
                             );
                         })}
-                        <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
-                            <Link href={`/plantjournal/update/${plant[0]._id}`} className="text-blue-500 hover:text-blue-700 font-semibold">
-                                Add Update
+                            <Link href={`/plantjournal/update/${plant[0]._id}`} className="text-lime-600 hover:text-lime-900 font-semibold">
+                                <li className="bg-white  hover:bg-neutral-200 p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
+                                    Add Update
+                                </li>
                             </Link>
-                        </li>
                     </ul>
                 </div>
+
+                <br></br>
+
+                <input 
+                    type="button" 
+                    value="Delete Plant"
+                    onClick={() => router.push(`/plantjournal/delete/${plant[0]._id}`)}
+                    className={`bg-red-500 text-white px-4 py-2 rounded w-full`}
+                />
+                <br></br>
             </div>
+
         </div>
     )
 }

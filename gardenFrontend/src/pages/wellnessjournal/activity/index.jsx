@@ -41,7 +41,7 @@ const Activity = () => {
 
 
   return (
-    <div>
+    <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
         <NavBar pageName='Wellness Journal' />
         <br></br>
         <WellnessNavBar />

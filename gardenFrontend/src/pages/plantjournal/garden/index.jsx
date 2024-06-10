@@ -42,7 +42,7 @@ const Garden = () => {
     console.log(gardenData)
 
     return (
-        <div>
+        <div className="min-h-screen flex-col items-center justify-center bg-gray-100">
             <NavBar pageName="Plant Journal" />
             <br></br>
             <PlantNavBar />
@@ -62,11 +62,11 @@ const Garden = () => {
                         </li>
                     );
                 })}
-                <li className="bg-white p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
-                    <Link href="/plantjournal/createplant" className="text-blue-500 hover:text-blue-700 font-semibold">
-                        Create A plant
+                    <Link href="/plantjournal/createplant" className="text-lime-600 hover:text-lime-900 font-semibold">
+                        <li className="bg-white hover:bg-neutral-200 p-4 rounded-lg shadow-md flex justify-center items-center w-45" >
+                            Create A plant
+                        </li>
                     </Link>
-                </li>
 
             </ul>
         </div>

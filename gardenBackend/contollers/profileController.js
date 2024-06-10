@@ -8,6 +8,30 @@ const db  = require('../models');
 
 const verifyToken = require('../middleware/VerifyJWT');
 
+// Delete - Mood and Journal Entry
+router.delete('/', async (req, res) =>{
+
+    try{
+        // Delete the mood entry by its ID
+        const deletedMood = await db.Mood.findByIdAndDelete( req.params.moodId );
+
+        // If the mood entry doesn't exist, return a 404 status code
+        if (!deletedMood) {
+            return res.status(404).json({ message: 'Mood not found' });
+        }
+
+        // Delete the journal entry associated with the deleted mood
+        await db.Journal.findOneAndDelete( { mood: req.params.moodId });
+
+        // Send a success message with a 200 status code
+        res.status(200).json({ message: 'Account Deleted' });
+
+    } catch (error) {
+        console.error("Error deleting account", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 //create profile
 router.post('/createprofile', verifyToken, async (req, res) => {
 
@@ -52,6 +76,7 @@ router.post('/createprofile', verifyToken, async (req, res) => {
 // Show Profile
 router.get('/', verifyToken, async (req, res) => {
     try {
+
         // Find the user profile by user ID
         const userProfile = await db.UserProfile.find({ user: req.user._id})
 

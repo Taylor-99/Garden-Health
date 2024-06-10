@@ -8,8 +8,11 @@ const postCommentSchema = new mongoose.Schema({
     image: { 
         type: String, 
     },
-    likes: { 
-        type: Number, 
+    userImage: {
+        type: String
+    },
+    userName: {
+        type: String
     },
     post: {
         type: mongoose.Types.ObjectId, 

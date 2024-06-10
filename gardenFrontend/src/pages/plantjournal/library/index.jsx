@@ -13,7 +13,7 @@ const Library = () => {
     const router = useRouter();
 
     const [isLoading, setLoading] = useState(true);
-    const [cookies] = useCookies(['token']);
+    const [cookies] = useCookies(['token', 'user']);
 
     let maxPages = 21863;
 
@@ -104,7 +104,7 @@ const Library = () => {
     if (!plantLibrary) return <p>No plants to show</p>
 
     return (
-        <div>
+        <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
             <NavBar pageName="Plant Journal" />
             
             <br></br>
@@ -137,13 +137,15 @@ const Library = () => {
                                 <Link href={`/plantjournal/plantlibrarydetails/${plant.scientific_name}`}>
                                     <img src={plant.image_url} alt={plant.common_name} className="w-full h-32 object-cover rounded-md mb-2" ></img>
                                     <h2 className="text-lg font-semibold">{plant.common_name}</h2>
+                                    <p className="text-md">{plant.scientific_name}</p>
+                                </Link>
+                                <br></br>
                                     <input 
                                         type='button' 
                                         value={isFavorite ? 'Remove Favorite' : 'Add Favorite'} 
                                         onClick={() => toggleFavorite(plant.scientific_name)} 
-                                        className={`px-4 py-2 rounded ${isFavorite ? 'bg-red-500 text-white' : 'bg-green-500 text-white'}`}
+                                        className={`px-4 py-2 rounded ${isFavorite ? 'bg-red-800 text-white' : 'bg-green-800 text-white'}`}
                                     />
-                                </Link>
 
                                 <br></br>
                             </li>

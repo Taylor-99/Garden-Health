@@ -16,30 +16,25 @@ router.get('/', verifyToken, async (req, res) => {
         // Retrieve all posts
         const posts = await db.CommunityPost.find()
 
-        // Array to store post information with user details
-        postsInfo = []
+        // Send the post information with user details as a response
+        res.json(posts)
         
-        // Iterate through each post to fetch user details
-        for(const post in posts){
+    } catch (error) {
+        console.error("Error getting Posts:", error.message);
+        res.status(500).json({ message: 'Internal server error' });
+    }
 
-            const userProfile = await db.UserProfile.find({ user: post.user });
+});
 
-            if (!userProfile) {
-                console.warn(`User profile not found for post ID ${post._id}`);
-                continue;
-            }
+// Show - Posts
+router.get('/post/:postId', verifyToken, async (req, res) => {
 
-            // Extract relevant information and add to postsInfo array
-            postsInfo.push({
-                pic: userProfile.image,
-                username: userProfile.username,
-                post
-            });
-
-        }
+    try {
+        // Retrieve all posts
+        const post = await db.CommunityPost.findById(req.params.postId)
 
         // Send the post information with user details as a response
-        res.json(postsInfo)
+        res.json(post)
         
     } catch (error) {
         console.error("Error getting Posts:", error.message);
@@ -60,26 +55,26 @@ router.get('/:postId', verifyToken, async (req, res) => {
         repliesInfo = []
         
         // Iterate through each reply to fetch user details
-        for(const reply in replies){
+        // for(const reply in replies){
 
-            const userProfile = await db.UserProfile.find({ user: reply.user });
+        //     const userProfile = await db.UserProfile.find({ user: reply.user });
 
-            if (!userProfile) {
-                console.warn(`User profile not found for post ID ${post._id}`);
-                continue;
-            }
+        //     if (!userProfile) {
+        //         console.warn(`User profile not found for post ID ${post._id}`);
+        //         continue;
+        //     }
 
-            // Extract relevant information and add to repliesInfo array
-            repliesInfo.push({
-                pic: userProfile.image,
-                username: userProfile.username,
-                reply
-            });
+        //     // Extract relevant information and add to repliesInfo array
+        //     repliesInfo.push({
+        //         pic: userProfile.image,
+        //         username: userProfile.username,
+        //         reply
+        //     });
 
-        }
+        // }
 
         // Send the reply information with user details as a response
-        res.json(repliesInfo)
+        res.json(replies)
         
     } catch (error) {
         console.error("Error getting Replies:", error.message);
@@ -89,7 +84,7 @@ router.get('/:postId', verifyToken, async (req, res) => {
 });
 
 // Delete Post
-router.delete('/:postId', async (req, res) =>{
+router.delete('/:postId', verifyToken, async (req, res) =>{
     try{
         // Find the post by ID
         let post = db.CommunityPost.findById(req.params.postId);
@@ -100,12 +95,15 @@ router.delete('/:postId', async (req, res) =>{
         };
 
         // Check if the current user is the owner of the post, if not, return a 403 status with an error message
-        if(req.user.userID !== post.user){
+        if(req.user._id !== post.user){
             return res.status(403).json({ message: 'Unauthorized to delete this post' });
         };
 
         // Delete the post
-        await db.CommunityPost.findByIdAndDelete( req.params.postId );
+        await db.CommunityPost.findByIdAndDelete( req.params.postId )
+
+        // Delete all replies for the post
+        await db.PostComment.remove({ post: req.params.postId})
 
         // Send a success message with a 200 status
         res.status(200).json({ message: 'Post deleted successfully' });
@@ -117,7 +115,7 @@ router.delete('/:postId', async (req, res) =>{
 });
 
 // Delete reply
-router.delete('/:replyId', async (req, res) =>{
+router.delete('/:replyId', verifyToken, async (req, res) =>{
     try{
 
         // Find the reply by ID
@@ -146,7 +144,7 @@ router.delete('/:replyId', async (req, res) =>{
 });
 
 // Update Post
-router.put('/:postId', async (req, res) => {
+router.put('/:postId', verifyToken, async (req, res) => {
 
     try{
 
@@ -181,8 +179,64 @@ router.put('/:postId', async (req, res) => {
 
 });
 
+router.put('/likes/:postId', verifyToken, async (req, res) => {
+
+    try{
+
+        let post = await db.CommunityPost.findById(req.params.postId)
+
+        // Check if the post was found and updated
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        };
+
+        console.log("user = ", req.user)
+
+        if (!post.likes.includes(req.user.username)) {
+
+            post.likes.push(req.user.username)
+
+            await post.save(); // Save the updated user profile
+        }
+
+        res.json(post);
+
+    }catch (error) {
+        console.error("Error updating Post:", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
+router.delete('/likes/:postId', verifyToken, async (req, res) => {
+
+    try{
+
+        let post = await db.CommunityPost.findById(req.params.postId)
+
+        // Check if the post was found and updated
+        if (!post) {
+            return res.status(404).json({ message: 'Post not found' });
+        };
+
+        // Remove the plant from the favorites
+        post.likes = post.likes.filter(
+            (user) => user !== req.user.username
+        );
+
+        await post.save();
+
+        res.json(post);
+
+    }catch (error) {
+        console.error("Error updating Post:", error.message);
+        res.status(400).json({ message: error.message });
+    }
+
+});
+
 // Update Reply
-router.put('/:replyId', async (req, res) => {
+router.put('/:replyId', verifyToken, async (req, res) => {
 
     try{
 
@@ -218,18 +272,21 @@ router.put('/:replyId', async (req, res) => {
 });
 
 // Function to create a new community post
-async function createPost(userId, postData) {
+async function createPost(userId, postData, profile) {
 
     // Construct the new post object
     const newPost = {
         post: postData.post,
         image: postData.image,
-        likes: 0,
+        likes: [],
+        userImage: profile.image,
+        userName: profile.username,
         user: userId,
     };
 
     // Create and save the new post
     const createdPost = await db.CommunityPost.create(newPost);
+
     await createdPost.save();
 };
 
@@ -238,14 +295,15 @@ router.post('/create', verifyToken, async (req, res) =>{
 
     try {
         // Find the user
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
+        const userProfile = await db.UserProfile.find ({ user: req.user._id});
 
         if (!user) {
         return res.status(404).json({ message: "User not found" });
         }
 
         // Create the post
-        await createPost(req.user.userID, req.body);
+        await createPost(req.user._id, req.body, userProfile[0]);
 
         // Respond with success message
         return res.status(201).json({ message: 'Post created successfully'});
@@ -258,13 +316,12 @@ router.post('/create', verifyToken, async (req, res) =>{
 });
 
 // Function to create a new reply
-async function createReply(userId, postId, replyData) {
+async function createReply(userId, postId, replyData, profile) {
 
     // Create a new reply object
     const newReply = {
         reply: replyData.reply,
         image: replyData.image,
-        likes: 0,
         post: postId,
         user: userId,
     };
@@ -279,7 +336,8 @@ router.post('/create/:postId', verifyToken, async (req, res) =>{
 
     try {
         // Find the user by user ID
-        const user = await db.User.findById(req.user.userID);
+        const user = await db.User.findById(req.user._id);
+        const userProfile = await db.UserProfile.find ({ user: req.user._id});
 
         // If user not found, return a 404 status with an error message
         if (!user) {
@@ -287,7 +345,7 @@ router.post('/create/:postId', verifyToken, async (req, res) =>{
         }
 
         // Call the createReply function to create the reply
-        await createReply(req.user.userID, req.params.postId, req.body);
+        await createReply(req.user._id, req.params.postId, req.body, userProfile[0]);
 
         // Return a 201 status with a success message
         return res.status(201).json({ message: 'Reply created successfully'});
@@ -300,7 +358,7 @@ router.post('/create/:postId', verifyToken, async (req, res) =>{
 });
 
 // Edit Post
-router.get('/edit/:postId', async(req, res) => {
+router.get('/edit/:postId', verifyToken, async(req, res) => {
 
     try {
         // Find the post by its ID
@@ -312,7 +370,7 @@ router.get('/edit/:postId', async(req, res) => {
         }
 
         // Check if the current user is authorized to edit the post
-        if(req.user.userID !== post.user){
+        if(req.user._id !== post.user){
             return res.status(403).json({ message: 'Unauthorized to edit this post' });
         };
 
@@ -327,7 +385,7 @@ router.get('/edit/:postId', async(req, res) => {
 });
 
 // Edit Reply
-router.get('/edit/:replyId', async(req, res) => {
+router.get('/edit/:replyId', verifyToken, async(req, res) => {
 
     try {
         // Find the reply by its ID

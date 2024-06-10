@@ -9,7 +9,13 @@ const communityPostSchema = new mongoose.Schema({
         type: String, 
     },
     likes: { 
-        type: Number, 
+        type: Array, 
+    },
+    userImage: {
+        type: String
+    },
+    userName: {
+        type: String
     },
     user:{
         type: mongoose.Types.ObjectId, 

@@ -77,51 +77,56 @@ export default function Auth(){
         })
     }
     return(
-        <div>
+        <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100" >
+            <h1 className="text-4xl font-bold mb-8" >Welcome to </h1>
             {
                 showLogin?
-                <section>
-                    <h2 onClick={() => setShowLogin(!showLogin)}>
+                <section className="bg-white rounded-lg shadow-md p-6">
+                    <h2 className="text-xl font-semibold mb-4 text-center" onClick={() => setShowLogin(!showLogin)}>
                         Login 
                         <br></br> 
-                        <small>New user, click to Signup!</small>
+                        <small>New user? click here to Signup!</small>
                     </h2>
 
-                    {error && <p style={{ color: 'red' }}>{error}</p>}
+                    {error && <p className="text-red-500 mb-4" >{error}</p>}
 
                     <form onSubmit={(e) => {
                         e.preventDefault();
                         setError('');
                         handleLogin()
                     }}>
-                        <label htmlFor="username" >Username: </label>
+                        <label htmlFor="username" className="block mb-2" >Username: </label>
                         <input type="text" 
                         name="username" 
                         placeholder="Enter your username" 
                         value={formData.username} 
-                        onChange={handleChange} />
+                        onChange={handleChange} 
+                        className="w-full px-3 py-2 border rounded-md mb-4"
+                        />
 
                         <br></br>
 
-                        <label htmlFor="password" >Password: </label>
+                        <label htmlFor="password" className="block mb-2" >Password: </label>
                         <input type="password" 
                         name="password" 
                         placeholder="Enter your password" 
                         value={formData.password} 
-                        onChange={handleChange} />
+                        onChange={handleChange} 
+                        className="w-full px-3 py-2 border rounded-md mb-4"
+                        />
 
                         <br></br>
                         <br></br>
 
                         <input type="submit" 
-                        value="LogIn" />
+                        value="LogIn" className="w-full bg-green-900 text-white px-4 py-2 rounded-md cursor-pointer" />
                     </form>
                 </section>:
-                 <section>
-                 <h2 onClick={() => setShowLogin(!showLogin)}>
+                 <section className="bg-white rounded-lg shadow-md p-6" >
+                 <h2 className="text-xl font-semibold mb-4 text-center" onClick={() => setShowLogin(!showLogin)}>
                     SignUp 
                     <br></br> 
-                    <small>Already have an account, click to Login</small>
+                    <small>Already have an account? click to Login</small>
                 </h2>
 
                 {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -131,27 +136,31 @@ export default function Auth(){
                     setError('');
                     handleSignUp()
                 }}>
-                    <label htmlFor="username" >Username: </label>
+                    <label htmlFor="username" className="block mb-2" >Username: </label>
                     <input type="text" 
                     name="username" 
                     placeholder="Enter your username" 
                     value={formData.username} 
-                    onChange={handleChange}/>
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md mb-4"
+                    />
 
                     <br></br>
 
-                    <label htmlFor="password" >Password: </label>
+                    <label htmlFor="password" className="block mb-2" >Password: </label>
                     <input type="password" 
                     name="password" 
                     placeholder="Enter your password" 
                     value={formData.password} 
-                    onChange={handleChange} />
+                    onChange={handleChange} 
+                    className="w-full px-3 py-2 border rounded-md mb-4"
+                    />
 
                         <br></br>
                         <br></br>
 
                     <input type="submit" 
-                    value="Sign Up"/>
+                    value="Sign Up" className="w-full bg-green-900 text-white px-4 py-2 rounded-md cursor-pointer"  />
                  </form>
              </section>
             }        

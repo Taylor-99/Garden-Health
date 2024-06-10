@@ -49,7 +49,7 @@ const NavBar = (props) => {
     return (
 
         <div>
-            <nav className="flex justify-between items-center px-4 bg-gray-800 py-2 w-full">
+            <nav className="flex justify-between items-center px-4 bg-green-900 py-2 w-full">
 
                 <h1 className="text-white font-semibold text-xl" >{props.pageName}</h1>
 

@@ -10,12 +10,12 @@ const PlantNavBar = () => {
             <nav>
                 <ul className="flex justify-center" >
                     <li>
-                        <Link href="/plantjournal/" className={`mr-4 ${router.pathname === '/plantJournal/garden' ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'}`}>
+                        <Link href="/plantjournal/garden" className={`px-4 py-2 rounded ${router.pathname === '/plantjournal/garden' ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-500 hover:bg-blue-500 hover:text-white'}`}>
                             Your garden
                         </Link>
                     </li>
                     <li>
-                        <Link href="/plantjournal/library" className={`${router.pathname === '/plantJournal/Library' ? 'text-blue-500' : 'text-gray-500 hover:text-blue-500'}`} >
+                        <Link href="/plantjournal/library" className={`px-4 py-2 rounded ${router.pathname === '/plantjournal/library' ? 'bg-emerald-500 text-white' : 'bg-gray-200 text-gray-500 hover:bg-blue-500 hover:text-white'}`}>
                             Plant Library
                         </Link>
                     </li>
