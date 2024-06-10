@@ -22,20 +22,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/plantjournal/createplant": [
+    "/wellnessjournal/activity": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/createplant.js"
+      "static/chunks/pages/wellnessjournal/activity.js"
     ],
-    "/plantjournal/garden": [
+    "/wellnessjournal/mood": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/garden.js"
-    ],
-    "/plantjournal/library": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/plantjournal/library.js"
+      "static/chunks/pages/wellnessjournal/mood.js"
     ]
   },
   "ampFirstPages": []

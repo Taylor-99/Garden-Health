@@ -75,7 +75,12 @@ const Activity = () => {
                             <p className="mb-2">Duration: {activity.duration} min</p>
                             <p className="mb-2">Was Activity Outdoors: {activity.outdoors}</p>
                             <p className="mb-2">Mood After Activity: {activity.activity_mood}</p>
-
+                            <input 
+                            type="button" 
+                            value="Delete Activity"
+                            onClick={() => router.push(`/wellnessjournal/deleteactivity/${activity._id}`)}
+                            className={`bg-red-500 text-white px-4 py-2 rounded w-full`}
+                            />
                         <br></br>
                     </li>
                 );

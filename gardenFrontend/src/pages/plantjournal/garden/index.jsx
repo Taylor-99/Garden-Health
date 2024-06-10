@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
+import Image from 'next/image'
 
 const Garden = () => {
 
@@ -42,6 +43,22 @@ const Garden = () => {
 
     console.log(gardenData)
 
+    function setDate(dateString){
+        
+        // Create a Date object from the date string
+        const date = new Date(dateString);
+        
+        // Get the individual components of the date
+        const year = date.getFullYear();
+        const month = date.getMonth() + 1; 
+        const day = date.getDate();
+        
+        let updatedDate = `${month}/${day}/${year}`
+        
+        return updatedDate
+    };
+
+
     return (
         <div className="min-h-screen flex-col items-center justify-center bg-gray-100">
             <NavBar pageName="Plant Journal" />
@@ -56,7 +73,7 @@ const Garden = () => {
                             <Link href={`/plantjournal/details/${plant[0]._id}`}>
                                 <img src={plant[1].plantImage} alt={plant[0].plantName} className="w-full h-32 object-cover rounded-md mb-2" ></img>
                                 <h2 className="text-lg font-semibold">{plant[0].plantName}</h2>
-                                <p className="text-gray-600" >Last update: {plant[0].updatedAt}</p>
+                                <p className="text-gray-600" >Last update: {setDate(plant[0].updatedAt)}</p>
                             </Link>
 
                             <br></br>

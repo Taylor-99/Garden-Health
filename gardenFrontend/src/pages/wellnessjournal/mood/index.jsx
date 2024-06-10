@@ -1,16 +1,19 @@
 
 import NavBar from '../../components/NavBar.jsx'
 import WellnessNavBar from '../components/WellnessNavBar.jsx'
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
+import { useRouter } from 'next/router'
 
 const Mood = () => {
-    const [isLoading, setLoading] = useState(true)
+    // const [isLoading, setLoading] = useState(true)
     const [cookies] = useCookies(['token']);
 
     const [moodLogData, setMoodLogData] = useState([]);
+
+    const router = useRouter();
 
     const fetchMoodLogs = async () => {
 
@@ -24,7 +27,7 @@ const Mood = () => {
 
             const data = await response.json()
             setMoodLogData(data)
-            setLoading(false)
+            // setLoading(false)
         } catch (error) {
             console.error('Error:', error.message);
         }
@@ -49,7 +52,7 @@ const Mood = () => {
         let updatedDate = `${month}/${day}/${year}`
         
         return updatedDate
-    };
+    }
 
     console.log(moodLogData)
 
@@ -74,6 +77,13 @@ const Mood = () => {
                         <p className="mb-2">Energy Mood: {mood.energyLevel}</p>
                         <p className="mb-2">Stress Mood: {mood.stressLevel}</p>
                         <br></br>
+
+                        <input 
+                            type="button" 
+                            value="Delete Mood"
+                            onClick={() => router.push(`/wellnessjournal/deletemood/${mood._id}`)}
+                            className={`bg-red-500 text-white px-4 py-2 rounded w-full`}
+                        />
                     </li>
                 );
             })}

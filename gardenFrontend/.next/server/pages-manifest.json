@@ -2,7 +2,6 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/plantjournal/garden": "pages/plantjournal/garden.js",
-  "/plantjournal/createplant": "pages/plantjournal/createplant.js",
-  "/plantjournal/library": "pages/plantjournal/library.js"
+  "/wellnessjournal/mood": "pages/wellnessjournal/mood.js",
+  "/wellnessjournal/activity": "pages/wellnessjournal/activity.js"
 }

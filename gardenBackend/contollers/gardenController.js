@@ -83,7 +83,7 @@ async function createNewPlant(userId, plantData) {
 };
 
 // Function to create a new plant update
-async function createNewPlantUpdate(plantId, updateData) {
+async function createNewPlantUpdate(plantId, updateData, plantPic) {
 
     if(updateData.rain.toLowerCase() === 'yes'){
         updateData.rain = true
@@ -94,15 +94,15 @@ async function createNewPlantUpdate(plantId, updateData) {
     // console.log(updateData.plantImage)
 
     // Define the properties of the new plant update
-    // const newPlantUpdate = {
-    //     plantImage: updateData.plantImage,
-    //     temperature: updateData.temperature,
-    //     rain: updateData.rain,
-    //     health: updateData.health,
-    //     fertilizer: updateData.fertilizer,
-    //     notes: updateData.notes,
-    //     plant: plantId,
-    // };
+    const newPlantUpdate = {
+        plantImage: plantPic,
+        temperature: updateData.temperature,
+        rain: updateData.rain,
+        health: updateData.health,
+        fertilizer: updateData.fertilizer,
+        notes: updateData.notes,
+        plant: plantId,
+    };
 
     // Create the new plant update in the database
     const createdUpdate = await db.PlantUpdate.create(newPlantUpdate);
@@ -114,8 +114,6 @@ router.post('/create',verifyToken, upload.single("plantImage"), async (req, res)
 
     try {
 
-        console.log("file = ", req.file)
-        console.log("body = ", req.body)
         // Find the authenticated user
         const user = await db.User.findById(req.user._id);
 
@@ -127,10 +125,11 @@ router.post('/create',verifyToken, upload.single("plantImage"), async (req, res)
         // Create a new plant and get its ID
         const plantId = await createNewPlant(req.user._id, req.body);
 
-        
+
+        let plantImage = `../uploads/${req.file.fieldname}`
 
         // Create a new plant update for the created plant
-        await createNewPlantUpdate(plantId, req.body);
+        await createNewPlantUpdate(plantId, req.body, plantImage);
 
         // // Send a success response
         return res.json({ message:'created plant' })
