@@ -3,5 +3,6 @@
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
   "/plantjournal/garden": "pages/plantjournal/garden.js",
-  "/plantjournal/createplant": "pages/plantjournal/createplant.js"
+  "/plantjournal/createplant": "pages/plantjournal/createplant.js",
+  "/plantjournal/library": "pages/plantjournal/library.js"
 }

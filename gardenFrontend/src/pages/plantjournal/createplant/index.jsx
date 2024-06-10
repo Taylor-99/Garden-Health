@@ -24,6 +24,7 @@ const CreatePlant = () => {
     }); 
     const [error, setError] = useState('');
     const [cookies] = useCookies(['token']);
+    const [file, setFile] = useState(null);
 
     const navigate = useRouter();
 
@@ -31,8 +32,8 @@ const CreatePlant = () => {
         try {
 
             const formData = new FormData();
-            console.log('form data = ', formData)
-            formData.append('plantImage', plantFormData.plantImage);
+            // console.log('form data = ', formData)
+            formData.append('plantImage', file);
             formData.append('plantName', plantFormData.plantName)
             formData.append('plantSpecies', plantFormData.plantSpecies)
             formData.append('watered', plantFormData.watered)
@@ -43,17 +44,17 @@ const CreatePlant = () => {
             formData.append('fertilizer', plantFormData.fertilizer)
             formData.append('notes', plantFormData.notes)
 
-            console.log(formData)
+            // console.log(formData)
 
             console.log("Sending data")
             const response = await fetch('http://localhost:4000/garden/create', {
                 method: 'POST',
                 credentials: "include",
                 headers: {
-                    'Content-Type': 'application/json',
+                    // 'Content-Type': 'multipart/formdata',
                     Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
                 },
-                body: JSON.stringify(formData),
+                body: formData,
             });
 
             await response.json();
@@ -74,7 +75,11 @@ const CreatePlant = () => {
             ...plantFormData, 
             [e.target.name]: e.target.value
         })
-    }
+    };
+
+    const handleFileChange = (event) => {
+        setFile(event.target.files[0]); // Get the first file from the file input
+      };
 
   return (
     <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
@@ -161,8 +166,7 @@ const CreatePlant = () => {
                 <input type='file' 
                 name="plantImage"  
                 placeholder="Upload image of your plant"
-                onChange={handleChange} 
-                value={plantFormData.plantImage} 
+                onChange={handleFileChange} 
                 className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 

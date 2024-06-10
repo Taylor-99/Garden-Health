@@ -26,6 +26,16 @@
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/plantjournal/createplant.js"
+    ],
+    "/plantjournal/garden": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/plantjournal/garden.js"
+    ],
+    "/plantjournal/library": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/plantjournal/library.js"
     ]
   },
   "ampFirstPages": []
