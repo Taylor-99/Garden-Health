@@ -34,14 +34,10 @@ router.post('/signup', async (req, res, next) => {
 
             console.log(token)
     
-            res.cookie("access_token", token, {
+            res.cookie("token", token, {
                 withCredentials: true,
                 httpOnly: false,
             })
-            .cookie("checkToken", true, {
-                httpOnly: true,
-                withCredentials: true,
-              });
     
             res.status(201).json({ message: "User signed up successfully", success: true, token, username });
     
@@ -85,11 +81,6 @@ router.post('/login', async (req, res, next) => {
                         httpOnly: true,
                         withCredentials: true,
                     })
-                    .cookie("checkToken", true, {
-                        httpOnly: true,
-                        withCredentials: true,
-                      });
-
                     res
                     .status(201)
                     .json({ message: "User signed in successfully", success: true, token, username });

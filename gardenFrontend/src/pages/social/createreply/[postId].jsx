@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
 import NavBar from '../../components/NavBar';
+import ReplyPost from '../components/ReplyPost'
 
 const CreateReply = () => {
 
@@ -12,7 +13,7 @@ const CreateReply = () => {
     const { postId } = router.query; // Get the dynamic id from the URL
 
     const [replyForm, setReplyForm] = useState({
-        post: "",
+        reply: "",
         image: "",
     });
 
@@ -77,8 +78,8 @@ const CreateReply = () => {
     }
 
     const handleChange = (e) => {
-        setPostFormData({
-            ...postFormData, 
+        setReplyForm({
+            ...replyForm, 
             [e.target.name]: e.target.value
         })
     };
@@ -97,18 +98,7 @@ const CreateReply = () => {
         <br></br>
         <br></br>
 
-        <div className="bg-white rounded-lg shadow-md p-4 mb-4 w-full" >
-            <div className="flex items-center mb-2" >
-                <img src={ post.userImage } className="w-10 h-10 rounded-full mr-2" alt="User Avatar" />
-                <p  className="font-semibold" >{ post.userName }</p>
-            </div>
-            <br></br>
-            <div className="max-w-screen-md w-full" >
-                <p className="mb-4 text-center" >{post.post}</p>
-                
-                <img src={post.image} className="w-full rounded-lg mb-4 mx-auto" />
-            </div>
-        </div>
+        <ReplyPost postid={postId} />
 
         <section className="mt-8">
             <h2 className="text-xl font-semibold mt-4 text-center">Create Reply</h2>
@@ -122,10 +112,10 @@ const CreateReply = () => {
                 }} className="mt-4 space-y-4 mx-auto max-w-md">
 
                 <input type='text' 
-                name="post"
+                name="reply"
                 onChange={handleChange}
                 placeholder="Reply to this post"
-                value={replyForm.post} 
+                value={replyForm.reply} 
                 className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                 />
 

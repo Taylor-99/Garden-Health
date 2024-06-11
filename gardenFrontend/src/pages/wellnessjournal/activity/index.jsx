@@ -5,8 +5,11 @@ import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
+import { useRouter } from 'next/router'
 
 const Activity = () => {
+
+    const router = useRouter()
 
     const [isLoading, setLoading] = useState(true)
     const [cookies] = useCookies(['token']);

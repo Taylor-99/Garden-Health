@@ -22,10 +22,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
+    "/profile": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/profile.js"
+    ],
     "/wellnessjournal/activity": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
       "static/chunks/pages/wellnessjournal/activity.js"
+    ],
+    "/wellnessjournal/deleteactivity/[activityID]": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/wellnessjournal/deleteactivity/[activityID].js"
     ],
     "/wellnessjournal/mood": [
       "static/chunks/webpack.js",

@@ -57,6 +57,7 @@ const CreateActivityLog = () => {
         })
     }
 
+
     return (
         <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
             <NavBar pageName='Wellness Journal' />
@@ -126,15 +127,15 @@ const CreateActivityLog = () => {
 
                     <br></br>
 
-                    <label htmlFor="activitymood" className="block">What is your overall moood after the activity? </label>
+                    <label htmlFor="activity_mood" className="block">What is your overall moood after the activity? </label>
                     <select
-                        name="overallMoodAfterActivity"
+                        name="activity_mood"
                         value={activityFormData.activity_mood}
                         onChange={handleChange}
                         className="w-full border rounded px-3 py-2 mt-1 focus:outline-none focus:border-green-600"
                     >
                         <option value="">Select overall mood after activity</option>
-                        <option value="Happy">Happy</option>
+                        <option name = "happy" value="Happy">Happy</option>
                         <option value="Content">Content</option>
                         <option value="Neutral">Neutral</option>
                         <option value="Sad">Sad</option>

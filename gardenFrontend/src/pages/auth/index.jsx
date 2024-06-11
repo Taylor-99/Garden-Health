@@ -87,7 +87,7 @@ export default function Auth(){
     }
     return(
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-100" >
-            <h1 className="text-4xl font-bold mb-8" >Welcome to </h1>
+            <h1 className="text-4xl font-bold mb-8" >Welcome</h1>
             {
                 showLogin?
                 <section className="bg-white rounded-lg shadow-md p-6">

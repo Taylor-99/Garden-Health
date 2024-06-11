@@ -10,7 +10,7 @@ const NavBar = (props) => {
 
     const navigate = useRouter();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [cookies] = useCookies(['user']);
+    const [cookies] = useCookies(['token', 'user']);
 
     const [username, setUsername] = useState("")
 
@@ -27,6 +27,7 @@ const NavBar = (props) => {
                 credentials: "include",
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
                 },
             });
 

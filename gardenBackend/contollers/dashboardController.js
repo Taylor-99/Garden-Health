@@ -53,6 +53,7 @@ router.get('/getweather', verifyToken, async (req, res) =>{
         // Fetch user profile from the database using the user ID from the verified token
         const userProfile = await db.UserProfile.findOne({ user: req.user._id });
 
+        console.log(req.user)
         // Get the user's city from their profile
         let userCity = userProfile.city;
 
@@ -268,14 +269,14 @@ router.put('/reminders/update/:reminderId', verifyToken, async (req, res) => {
         let updateReminder = await db.Reminder.findById(req.params.reminderId);
 
         if (!updateReminder) {
-            return res.status(404).json({ message: 'Challenge not found' });
+            return res.status(404).json({ message: 'Reminder not found' });
         }
 
         updateReminder.completed = true;
         await updateReminder.save()
 
         // Send a success response
-        res.status(200).json({ message: 'Challenge updated successfully', reminder: updateReminder });
+        res.status(200).json({ message: 'Reminder updated successfully', reminder: updateReminder });
 
     } catch (error) {
         console.error("Error updating reminders: ", error.message);

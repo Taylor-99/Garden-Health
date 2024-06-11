@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link';
 import withAuth from '../../components/withAuth';
 import NavBar from '../../components/NavBar.jsx';
+import ReplyPost from '../components/ReplyPost.jsx'
 
 const Replies = () => {
 
@@ -14,10 +15,11 @@ const Replies = () => {
     const [cookies] = useCookies(['token']);
     const [replies, setReplies] = useState([])
 
-    const fetchPostsReplies = async () => {
+    const fetchPostReplies = async () => {
 
         try {
-            const response = await fetch(`http://localhost:4000/social/${postid}`, {
+            console.log("getting replies")
+            const response = await fetch(`http://localhost:4000/social/replies/${postid}`, {
                 credentials: 'include',
                 headers: {
                     Authorization: `Bearer ${cookies.token}`, // Include the token in the Authorization header
@@ -30,6 +32,12 @@ const Replies = () => {
             console.error('Error:', error.message);
         }
     };
+
+    useEffect(() => {
+
+        fetchPostReplies();
+
+    }, [postid, cookies.token]);
 
     console.log(replies)
 
@@ -46,6 +54,8 @@ const Replies = () => {
 
         <br></br>
         <br></br>
+
+        <ReplyPost postid={postid} />
 
         <ul className="max-w-screen-md w-full">
             {replies && replies.map((reply, index) => {

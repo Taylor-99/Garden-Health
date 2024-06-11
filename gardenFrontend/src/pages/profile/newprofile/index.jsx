@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
 import withAuth from '../../components/withAuth';
+import { useCookies } from 'react-cookie';
 
 const CreateProfile = () => {
     const [profileData, setProfileData] = useState({
@@ -17,6 +18,7 @@ const CreateProfile = () => {
     const [success, setSuccess] = useState('');
 
     const navigate = useRouter();
+    const [cookies] = useCookies(['token']);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -25,7 +27,7 @@ const CreateProfile = () => {
 
     const handleSubmit = async () => {
         try {
-            console.log("getting Data")
+            console.log(profileData)
             const response = await fetch('http://localhost:4000/profile/createprofile/', {
                 method: 'POST',
                 credentials: 'include', // Important to include cookies
@@ -36,14 +38,9 @@ const CreateProfile = () => {
                 body: JSON.stringify(profileData),
             });
 
-            console.log(response)
-
-            const data = await response.json();
-            console.log(data)
-
             if (response.ok) {
                 setSuccess('Profile created successfully');
-                navigate.replace('/')
+                navigate.replace('/dashboard')
             } else {
                 setError(data.message);
             }

@@ -6,7 +6,8 @@ require('dotenv').config();
 const router = require('express').Router();
 const db  = require('../models');
 
-const verifyToken = require('../middleware/VerifyJWT');;
+const verifyToken = require('../middleware/VerifyJWT');const { AmplifyBackend } = require('aws-sdk');
+;
 
 // Show - Posts
 router.get('/', verifyToken, async (req, res) => {
@@ -44,34 +45,16 @@ router.get('/post/:postId', verifyToken, async (req, res) => {
 });
 
 // Show - replies
-router.get('/:postId', verifyToken, async (req, res) => {
+router.get('/replies/:postId', verifyToken, async (req, res) => {
 
     try {
+
+        console.log('in backend')
+
+        console.log(req.params.postId)
         
         // Retrieve all replies for post
         const replies = await db.PostComment.find( {post: req.params.postId})
-
-        // Array to store reply information with user details
-        repliesInfo = []
-        
-        // Iterate through each reply to fetch user details
-        // for(const reply in replies){
-
-        //     const userProfile = await db.UserProfile.find({ user: reply.user });
-
-        //     if (!userProfile) {
-        //         console.warn(`User profile not found for post ID ${post._id}`);
-        //         continue;
-        //     }
-
-        //     // Extract relevant information and add to repliesInfo array
-        //     repliesInfo.push({
-        //         pic: userProfile.image,
-        //         username: userProfile.username,
-        //         reply
-        //     });
-
-        // }
 
         // Send the reply information with user details as a response
         res.json(replies)
@@ -150,7 +133,7 @@ router.put('/:postId', verifyToken, async (req, res) => {
 
         // Construct the update object based on provided data
         const updateData = {};
-        if (req.body.post) updateData.post = req.body.post;
+        if (req.body.reply) updateData.reply = req.body.reply;
         if (req.body.image) updateData.image = req.body.image;
 
         // Ensure that either post or image or both are provided
@@ -322,6 +305,8 @@ async function createReply(userId, postId, replyData, profile) {
     const newReply = {
         reply: replyData.reply,
         image: replyData.image,
+        userImage: profile.image,
+        userName: profile.username,
         post: postId,
         user: userId,
     };

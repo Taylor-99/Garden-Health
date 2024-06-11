@@ -13,7 +13,6 @@ const reminders = () => {
     const fetchReminders = async () => {
 
         try {
-            console.log("getting reminders")
             const response = await fetch('http://localhost:4000/dash/reminders', {
                 credentials: 'include',
                 headers: {
@@ -37,6 +36,7 @@ const reminders = () => {
 
     const handleCompleteClick = async (reminderId) => {
         try {
+            console.log("getting update")
             const response = await fetch(`http://localhost:4000/dash/reminders/update/${reminderId}`, {
                 method: 'PUT',
                 credentials: 'include',
@@ -47,6 +47,7 @@ const reminders = () => {
             });
 
             if (response.ok) {
+                console.log("data")
                 // Fetch the latest reminders after completing a reminder
                 await fetchReminders();
             } else {
@@ -66,15 +67,19 @@ const reminders = () => {
         <h1 className="text-2xl font-bold mb-4 text-center"> Reminders </h1>
         <ul>
             {reminders && reminders.map((reminder, index) => {
+                let isComplete = false;
+                if(reminder.completed === true){
+                    isComplete = true
+                }
                 return (
                     <li className="bg-white rounded-lg shadow-lg p-4 mb-2 text-center" key={index}>
                             <p className="text-lg font-bold mb-2" >{reminder.message}</p>
                             <input 
                             type="button" 
-                            value="Complete" 
+                            value={isComplete ? "Completed" : "Complete"}  
                             onClick={() => handleCompleteClick(reminder._id)}
-                            disabled={reminder.completed}
-                            className="bg-red-500 hover:bg-red-600 text-white font-semibold py-2 px-4 rounded mt-4 cursor-pointer transition duration-300" />
+                            disabled={isComplete}
+                            className={`bg-${isComplete ? 'green' : 'red'}-500 hover:bg-${isComplete ? 'green' : 'red'}-600 text-white font-semibold py-2 px-4 rounded mt-4 cursor-pointer transition duration-300`} />
                     </li>
                 );
             })}

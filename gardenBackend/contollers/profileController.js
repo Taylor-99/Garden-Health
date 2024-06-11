@@ -63,7 +63,7 @@ router.post('/createprofile', verifyToken, async (req, res) => {
             bio: req.body.bio,
             level: "Level 0 - Starter",
             favorite_plants: [],
-            user: req.user.userID
+            user: req.user._id
         };
 
         // Create the user profile
