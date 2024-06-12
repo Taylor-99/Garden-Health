@@ -13,7 +13,7 @@ const Replies = () => {
     const { postid } = router.query; // Get the dynamic id from the URL
 
     const [cookies] = useCookies(['token']);
-    const [replies, setReplies] = useState([])
+    const [replyData, setReplyData] = useState([])
 
     const fetchPostReplies = async () => {
 
@@ -27,7 +27,7 @@ const Replies = () => {
             });
     
             const data = await response.json()
-            setReplies(data)
+            setReplyData(data)
         } catch (error) {
             console.error('Error:', error.message);
         }
@@ -37,9 +37,9 @@ const Replies = () => {
 
         fetchPostReplies();
 
-    }, [postid, cookies.token]);
+    }, [postid]);
 
-    console.log(replies)
+    console.log(replyData)
 
   return (
     <div className="min-h-screen flex-col items-center justify-center bg-gray-100 mx-auto">
@@ -58,7 +58,7 @@ const Replies = () => {
         <ReplyPost postid={postid} />
 
         <ul className="max-w-screen-md w-full">
-            {replies && replies.map((reply, index) => {
+            {replyData && replyData.map((reply, index) => {
                 return (
                     <li key={index} className="bg-white rounded-lg shadow-md p-4 mb-4 w-full" >
                         <div className="flex items-center mb-2" >
@@ -67,7 +67,7 @@ const Replies = () => {
                         </div>
                         <br></br>
                         <div className="max-w-screen-md w-full" >
-                            <p className="mb-4 text-center" >{reply.post}</p>
+                            <p className="mb-4 text-center" >{reply.reply}</p>
                             <img src={reply.image} className="w-full rounded-lg mb-4 mx-auto" />
                         </div>
                     </li>

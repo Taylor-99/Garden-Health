@@ -22,25 +22,20 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/profile": [
+    "/dashboard": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/profile.js"
+      "static/chunks/pages/dashboard.js"
     ],
-    "/wellnessjournal/activity": [
+    "/social": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/activity.js"
+      "static/chunks/pages/social.js"
     ],
-    "/wellnessjournal/deleteactivity/[activityID]": [
+    "/social/replies/[postid]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/deleteactivity/[activityID].js"
-    ],
-    "/wellnessjournal/mood": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/wellnessjournal/mood.js"
+      "static/chunks/pages/social/replies/[postid].js"
     ]
   },
   "ampFirstPages": []
